@@ -35,7 +35,7 @@ runtime: shiny_prerendered
 <!-- Open all links in new tab-->  
 <base target="_blank"/>  
 
-<div id="google_translate_element"></div>
+<div align="left" id="google_translate_element",></div>
 
 <script type="text/javascript" src='//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'></script>
 
