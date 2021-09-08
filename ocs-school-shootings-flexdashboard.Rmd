@@ -1,0 +1,994 @@
+---
+title: "School Shooting Dashboard"
+output:
+  flexdashboard::flex_dashboard:
+    logo: https://icons.iconarchive.com/icons/icons8/windows-8/48/Military-Gun-icon.png
+    theme: readable
+    orientation: columns
+    source_code: embed
+    vertical_layout: fill
+runtime: shiny
+---
+
+
+
+```{r}
+#
+library(here)
+library(readr)
+library(dplyr)
+library(flexdashboard)
+library(shiny)
+library(magrittr)
+library(forcats)
+library(stringr)
+library(waffle)
+library(tidyr)
+library(poliscidata)
+library(leaflet)
+library(htmltools)
+library(DT)
+```
+
+```{r}
+shooting_data <- read_csv(here("processed_data",
+                                        "shooting_data_pre_geo_wrangled.csv"))
+
+shooting_data_geocoded <- read_csv(here("processed_data",
+                                        "shooting_data_wrangled.csv"))
+```
+
+About {data-icon="fa-question-circle"}
+===================================== 
+
+Column {data-width=70}
+-------------------------------------
+
+### 
+
+**What is the purpose of this dashboard?**
+
+This dashboard has two purposes:
+
+1. To illustrate trends in school shooting events in the United States
+2. To demonstrate how to create a dashboard using `R`
+
+**The data**
+
+This dashboard uses data from the open-source [K-12 Shool Shooting Database](https://www.chds.us/ssdb/dataset/) downloaded from the [Center for Homeland Defense and Security](https://www.chds.us/c/) at the at the [Naval Postgraduate School(NPS)](https://en.wikipedia.org/wiki/Naval_Postgraduate_School). This data was downloaded June of 2020.
+
+<style>
+div.green { background-color:#8FBC8F; border-radius: 5px; padding: 20px; font-size: 1em;color: white;}
+</style>
+<div class = "green">
+Riedman, David, and Desmond O’Neill. “CHDS – K-12 School Shooting Database.” Center for Homeland Defense and Security, June 2020, [www.chds.us/ssdb](www.chds.us/ssdb).
+</div>
+
+  
+This database includes information about school shooting events for students in grades K-12 in the United States dating back to 1970. The database has additional information not shown on our dashboard including, but not limited to: location of the event at the school, source for the shooting information, shooter characteristics, and victim characteristics. 
+
+### 
+
+
+<u>**Want to learn how to create a dashboard just like this?**</u>
+
+Visit the [*Tutorial*](#tutorial) page of this dashboard to first learn the basics about building a dashboard with the `flexdashboard` package.
+
+At the end of the tutorial we provide a link to this [supplementary resource by the Open Case Studies project](https://opencasestudies.github.io/ocs-bp-school-shootings-dashboard/), which provides more detailed information about how ***this dashboard*** was created.
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px; font-size: .8em;}
+</style>
+<div class = "blue">
+
+ **Acknowledgements**
+
+This was created as part of the [Open Case Studies](https://opencasestudies.github.io){target="_blank"} project. We would like to acknowledge the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/) for funding this work. 
+
+ **Disclaimer**
+
+This dashboard uses data from the [K-12 Shool Shooting Database](https://www.chds.us/ssdb/dataset/). We acknowledge (like their website) that there may be reporting errors. The trends and statistics shown do not account for the many other factors that may influence the occurrence of shooting events. The dashboard should not be used in the context of making policy decisions without external consultation from scientific experts. 
+
+
+ **License**
+
+This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [(CC BY-NC 3.0)](https://creativecommons.org/licenses/by-nc/3.0/us/){target="_blank"} United States License.
+</div>
+
+Column {data-width=30}
+-------------------------------------
+
+###
+
+
+```{r, echo=FALSE, fig.cap="[Photograph by Nathan Dumlao](https://unsplash.com/photos/xPHmmVKS8lM)", out.width = '100%'}
+knitr::include_graphics(here::here("img", "nathan-dumlao-xPHmmVKS8lM-unsplash.jpg"))
+```
+
+
+
+The Data {data-icon="fa-database"}
+===================================== 
+
+Column {data-width=70}
+-------------------------------------
+
+###
+
+The data used in this dashboard is from the [**Center for Homeland Defense and Security (CHDS)**](Center for Homeland Defense and Security (CHDS)) [**K-12 Shool Shooting Database**](https://www.chds.us/ssdb/dataset/). 
+
+Their methods for identifying and authenticating incidents are outlined [here](https://www.chds.us/ssdb/methods/).
+
+According to their website: 
+
+*"The database compiles information from more than 25 different sources including peer-reviewed studies, government reports, mainstream media, non-profits, private websites, blogs, and crowd-sourced lists that have been analyzed, filtered, deconflicted, and cross-referenced. **All of the information is based on open-source information and 3rd party reporting... and may include reporting errors.**"*
+
+***
+
+```{r, echo=FALSE}
+# Create the DT table first
+DT_table <- shooting_data %>%
+  dplyr::select(Date,
+                School,
+                City,
+                State,
+                `Killed (includes shooter)`,
+                `Narrative (Detailed Summary/ Background)`) %>%
+  rename("Deaths" = `Killed (includes shooter)`) %>%
+  rename("Narrative" = `Narrative (Detailed Summary/ Background)`)
+# Instead of depending on the st_jitter algorithm to generate random placement, a custom function placing the points side by side at a set distance could be used to make points occuring at the same location appear neatly apart.
+```
+
+```{r, echo=FALSE}
+DT::renderDataTable({
+  DT::datatable(DT_table,
+                caption = htmltools::tags$caption(
+                  style = 'caption-side: top; text-align: Left;',
+                  htmltools::withTags(
+                    div(HTML('<a href="https://www.chds.us/ssdb/dataset/)">Click here to be redirected to a page where this data can be downloaded.</a>')))),
+                options = list(autoWidth = TRUE,
+                               pageLength = 10,
+                               scroller = TRUE,
+                               scrollY = '450px'))
+})
+```
+
+Column {data-width=30}
+-------------------------------------
+
+###
+
+```{r, echo=FALSE, fig.cap="[Photograph by Rubén Rodriguez](https://unsplash.com/photos/IXTvnOOSTyU)"}
+knitr::include_graphics(here::here("img", "ruben-rodriguez-IXTvnOOSTyU-unsplash.jpg"))
+```
+
+US Statistics {data-icon="fa-flag"}
+===================================== 
+
+Column {data-width=700 .tabset .tabset-fade}
+-------------------------------------
+
+### Yearly Deaths and Shootings
+
+```{r}
+
+start <- 1970
+end <- 2020
+
+shootings_per_year<- shooting_data %>%
+    group_by(Date_year) %>%
+    count() %>%
+  rename("Shootings" = n) %>%
+    ungroup()
+
+deaths_per_year<-shooting_data %>% 
+  group_by(Date_year) %>%
+  summarize(Deaths =sum(`Killed (includes shooter)`))
+
+
+per_year<-full_join(shootings_per_year, deaths_per_year)
+per_year %<>%pivot_longer( cols = (-Date_year), 
+                           values_to = "events", 
+                           names_to = "id")
+
+per_year%<>% 
+  mutate(id = forcats::fct_inorder(id))
+
+per_year %>%
+    ggplot(aes(x = Date_year, y = events, fill =id)) +
+    geom_col()+
+    facet_wrap(~id, scales = "free", 
+               labeller = as_labeller(c(Shootings = "Shootings (# of events)", 
+                                        Deaths = "Deaths (# of people)")), 
+               strip.position = "left")+
+    scale_x_continuous(breaks = seq(start, end, by = 5),
+                 labels = seq(start, end, by = 5),
+                 limits = c(start-1, end+1)) +
+    scale_y_continuous(breaks = seq(0, 120, by = 30),
+                 labels = seq(0, 120, by = 30),
+                 limits = c(0, 121))+
+    theme_minimal() +
+   labs(title = "Yearly Shootings and Deaths Attributable to School Shootings",
+         subtitle = "United States",
+         y = NULL,
+         x = "Year")+
+  scale_fill_manual(values = c("black", "black"))+
+  theme(legend.position = "none", 
+        legend.title = element_blank(),
+        axis.text.x = element_text(angle = 90, face = "bold"),
+        axis.title.x = element_text(face = "bold", size = 14),
+        strip.background = element_blank(),
+        strip.placement = "outside",
+        strip.text = element_text(face = "bold", size = 14))
+
+
+theme_dashboard <- function(){ 
+  theme(legend.position = "none", 
+        legend.title = element_blank(),
+        #title = element_text(face = "bold", size = 16),
+        axis.text.x = element_text(angle = 90, face = "bold"),
+        axis.title.x = element_text(face = "bold", size = 14),
+        strip.background = element_blank(),
+        strip.placement = "outside",
+        strip.text = element_text(face = "bold", size = 14))
+}
+```
+
+### Yearly Cumulative Deaths and Shootings
+
+```{r}
+
+shootings_per_year_cum <- shootings_per_year %>%
+    mutate(Shootings = cumsum(Shootings))
+
+deaths_per_year_cum <- deaths_per_year %>%
+    mutate(Deaths= cumsum(Deaths))
+
+
+per_year_cum <- full_join(shootings_per_year_cum, deaths_per_year_cum)
+
+
+per_year_cum %<>%pivot_longer( cols = c(Shootings,
+                                        Deaths ), 
+                           values_to = "events", 
+                           names_to = "id")
+per_year_cum%<>% 
+  mutate(id = forcats::fct_inorder(id))
+
+per_year_cum %>%
+ggplot(aes(x = Date_year, y = events, fill =id)) +
+    geom_col()+
+    facet_wrap(~id, scales = "free", 
+               labeller = as_labeller(c(Shootings = "Shootings (cumulative # of events)", 
+                                        Deaths = "Deaths(cumulative # of people)")), 
+               strip.position = "left")+
+    scale_x_continuous(breaks = seq(start, end, by = 5),
+                 labels = seq(start, end, by = 5),
+                 limits = c(start-1, end+1)) +
+    scale_fill_manual(values = c("black", "black"))+
+    theme_minimal() +
+    labs(title = "Cumulative Yearly Shootings and Deaths Attributable to\nSchool Shootings",
+         subtitle = "United States",
+         y = NULL,
+         x = "Year") +
+    theme_dashboard() 
+```
+
+### Deaths Per Shooting
+
+```{r}
+deaths_perc_event <-shooting_data %>%
+   count(`Killed (includes shooter)`) %>%
+   rename("num_events"= n) %>%
+   mutate(percent = round(num_events/sum(num_events)*100, digits =1))
+
+greater_than4<-deaths_perc_event %>% 
+  filter(`Killed (includes shooter)` >= 4) %>% 
+  colSums()
+
+deaths_perc_event %<>%  bind_rows(greater_than4)
+
+deaths_perc_event %<>% mutate(category = paste0(`Killed (includes shooter)`, " deaths ", "\n(", percent, "%)")) 
+deaths_perc_event %<>% 
+  mutate(category = case_when(
+    category ==  last(pull(deaths_perc_event, category)) ~ paste0("4+ deaths ", "\n(", percent, "%)"),
+    category == "1 deaths" ~ "1 death",
+    TRUE ~ category))
+
+deaths_perc_event %>% select(-`Killed (includes shooter)`) %>%
+  filter(str_detect(category, "0 deaths|1 death|2 deaths|3 deaths|4\\+")) %>%
+  mutate(percent = round(percent)) %>%
+  select(-num_events) %>%
+  tidyr::pivot_wider(names_from = category, 
+                    values_from = percent) %>%
+  waffle::waffle(legend_pos = "bottom", title = "Deaths Per School Shooting", 
+       xlab="1 square ~ 1%")+  scale_fill_viridis_d()
+
+```
+
+Column {data-width=300}
+------------------------------------- 
+
+
+
+
+### **Total Wounded**
+    
+```{r}
+valueBox(value = sum(pull(shooting_data, Wounded), na.rm = TRUE),
+         color = "white")
+```
+    
+### **Total Deaths**
+
+```{r}
+valueBox(value = sum(pull(
+  shooting_data,`Killed (includes shooter)`), na.rm = TRUE),
+         color = "white")
+```
+
+
+
+### **Shooter committed or attempted suicide**
+
+```{r}
+
+suicide <- (sum(pull(shooting_data,`Suicide (or attempted suicide) by Shooter (Y/N)`), na.rm = TRUE) /
+            sum(pull(shooting_data, `Suicide (or attempted suicide) by Shooter (Y/N)`)>=0, na.rm = TRUE))*100
+suicide <- round(suicide, 1)
+
+reporting_suic <- (sum(pull(shooting_data, `Suicide (or attempted suicide) by Shooter (Y/N)`)>=0, na.rm = TRUE)/
+              length(pull(shooting_data, `Suicide (or attempted suicide) by Shooter (Y/N)`)))*100
+reporting_suic <- round(reporting_suic, 1)
+
+valueBox(value = paste0(suicide,"%"), 
+         color = "white")
+```
+
+
+    
+
+### **Use of a Single Handgun**
+
+```{r}
+
+
+handgun <-paste(as.character(round(100 *(sum(case_when(
+      pull(shooting_data,`Firearm Type`) == "Handgun" ~ TRUE,
+                                                 TRUE ~ FALSE), na.rm = TRUE)
+    /
+      sum(pull(shooting_data, `Firearm Type`)>=0, na.rm = TRUE)),
+    1)), "%")
+
+reporting_gun <- (sum(pull(shooting_data, `Firearm Type`)>=0, na.rm = TRUE)/
+              length(pull(shooting_data, `Firearm Type`)))*100
+reporting_gun <- round(reporting_gun, 1)
+
+
+valueBox(value = handgun,
+  color = "white")
+
+```
+
+
+### **Shooter Was Male**
+```{r}
+
+
+gender <- paste(as.character(round(100 * (sum(
+    case_when(pull(shooting_data,`Shooter Gender`) == "Male" ~ TRUE,
+                                                        TRUE ~ FALSE),
+                                      na.rm = TRUE)
+    /
+      sum(pull(shooting_data, `Shooter Gender`)>=0, na.rm = TRUE)),
+    1)), "%")
+
+reporting_male <- (sum(pull(shooting_data, `Shooter Gender`)>=0, na.rm = TRUE)/
+              length(pull(shooting_data, `Shooter Gender`)))*100
+reporting_male <- round(reporting_male, 1)
+
+
+valueBox(value = paste(gender),
+  color = "white")
+
+
+```
+
+###
+
+reporting rate of shooter suicide = `r reporting_suic`%,  
+reporting rate of gun type = `r reporting_gun`%,  
+reporting rate of shooter gender = `r reporting_male`%
+
+
+State Statistics {data-icon=fa-flag-checkered}
+===================================== 
+
+Column {.sidebar data-width=300}
+-----------------------------------------------------------------------
+
+Note that the statistics shown do not account for other possibly influential state specific features like population density, gun policies, etc.
+
+```{r}
+selectInput(inputId = "state_selected", 
+              label = "Select a state to explore:",
+            choices = shooting_data %>% 
+              pull(State) %>% 
+              unique() %>%
+              sort(), selected = "Alabama")
+
+# Washington, D.C. gets excluded by this
+```
+
+
+Column {data-width=900 .tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Yearly Deaths and Shootings
+
+```{r}
+renderPlot({
+shooting_data_state <- shooting_data %>% filter(State == input$state_selected)
+
+shootings_per_year<- shooting_data_state  %>%
+    group_by(Date_year) %>%
+    count() %>%
+  rename("Shootings" = n) %>%
+    ungroup()
+
+deaths_per_year<-shooting_data_state  %>% 
+  group_by(Date_year) %>%
+  summarize(Deaths =sum(`Killed (includes shooter)`))
+
+
+per_year<-full_join(shootings_per_year, deaths_per_year)
+per_year %<>%pivot_longer( cols = (-Date_year), 
+                           values_to = "events", 
+                           names_to = "id")
+
+per_year%<>% 
+  mutate(id = forcats::fct_inorder(id))
+
+per_year %<>%
+    ggplot(aes(x = Date_year, y = events, fill =id)) +
+    geom_col()+
+    facet_wrap(~id, scales = "free", 
+               labeller = as_labeller(c(Shootings = "Shootings (# of events)", 
+                                        Deaths = "Deaths (# of people)")), 
+               strip.position = "left")+
+    scale_x_continuous(breaks = seq(start, end, by = 5),
+                 labels = seq(start, end, by = 5),
+                 limits = c(start-1, end+1)) +
+    theme_minimal() +
+  scale_fill_manual(values = c("black", "black"))+
+    labs(title = "Yearly Shootings and Deaths Attributable to School Shootings",
+         subtitle = "United States",
+         y = NULL,
+         x = "Year") +
+    theme_dashboard()+
+    theme(title = element_text(size = 16, face = "bold"),
+          axis.text = element_text(size = 14))
+})
+```
+
+### Yearly Cumulative Deaths and Shootings
+
+```{r}
+renderPlot({
+
+shooting_data_state <- shooting_data %>% filter(State == input$state_selected)
+
+shootings_per_year<- shooting_data_state  %>%
+    group_by(Date_year) %>%
+    count() %>%
+  rename("Shootings" = n) %>%
+    ungroup()
+
+shootings_per_year_cum <- shootings_per_year %>%
+    mutate(Shootings = cumsum(Shootings))
+
+deaths_per_year<-shooting_data_state  %>% 
+  group_by(Date_year) %>%
+  summarize(Deaths =sum(`Killed (includes shooter)`))
+
+deaths_per_year_cum <- deaths_per_year %>%
+    mutate(Deaths= cumsum(Deaths))
+
+
+per_year_cum <- full_join(shootings_per_year_cum, deaths_per_year_cum)
+
+
+per_year_cum %<>%pivot_longer( cols = c(Shootings,
+                                        Deaths ), 
+                           values_to = "events", 
+                           names_to = "id")
+per_year_cum%<>% 
+  mutate(id = forcats::fct_inorder(id))
+
+per_year_cum %>%
+ggplot(aes(x = Date_year, y = events, fill =id)) +
+    geom_col()+
+    facet_wrap(~id, scales = "free", 
+               labeller = as_labeller(c(Shootings = "Shootings (cumulative # of events)", 
+                                        Deaths = "Deaths (cumulative # of people)")), 
+               strip.position = "left")+
+    scale_x_continuous(breaks = seq(start, end, by = 5),
+                 labels = seq(start, end, by = 5),
+                 limits = c(start-1, end+1)) +
+    scale_fill_manual(values = c("black", "black"))+
+    theme_minimal() +
+    labs(title = "Cumulative Yearly Shootings and Deaths Attributable to School Shootings",
+         subtitle = "United States",
+         y = NULL,
+         x = "Year") +
+    theme_dashboard() +
+    theme(title = element_text(size = 16, face = "bold"),
+           axis.text   = element_text(size = 14))
+
+})
+```
+
+### Deaths Per Shooting
+
+```{r}
+renderPlot({
+
+shooting_data_state <- shooting_data %>% filter(State == input$state_selected)
+
+deaths_perc_event <-shooting_data_state %>%
+   count(`Killed (includes shooter)`) %>%
+   rename("num_events"= n) %>%
+     tidyr::drop_na() %>%
+   mutate(percent = round(num_events/sum(num_events)*100, digits =1))
+
+
+greater_than4<-deaths_perc_event %>% 
+  filter(`Killed (includes shooter)` >= 4) %>% 
+  colSums()
+
+deaths_perc_event %<>%  bind_rows(greater_than4)
+
+deaths_perc_event %<>% mutate(category = paste0(`Killed (includes shooter)`, " deaths ", "\n(", percent, "%)")) 
+deaths_perc_event %<>% 
+  mutate(category = case_when(
+    category ==  last(pull(deaths_perc_event, category)) ~ paste0("4+ deaths ", "\n(", percent, "%)"),
+    category == "1 deaths" ~ "1 death",
+    TRUE ~ category))
+
+ deaths_perc_event %<>%
+ filter (!duplicated(`category`))
+
+deaths_perc_event %>% select(-`Killed (includes shooter)`) %>%
+  filter(str_detect(category, "0 deaths|1 death|2 deaths|3 deaths|4\\+")) %>%
+  filter(category != "4 deaths") %>%
+  mutate(percent = round(percent)) %>%
+  select(-num_events) %>%
+  tidyr::pivot_wider(names_from = category, 
+                    values_from = percent) %>%
+  waffle::waffle(legend_pos = "bottom", title = "Deaths Per School Shooting", 
+       xlab="1 square ~ 1%")+  scale_fill_viridis_d()
+
+})
+
+```
+
+Column {data-width=450}
+-----------------------------------------------------------------------
+
+### **Total State Deaths**
+
+```{r}
+renderValueBox({
+shooting_data_state <- shooting_data %>% filter(State == input$state_selected)
+
+
+valueBox(sum(pull(shooting_data_state,`Killed (includes shooter)`), na.rm = TRUE),
+         color = "white")
+})
+```
+
+### **US State Average Death Count**
+```{r}
+
+shooting_data_state <-shooting_data %>% 
+  group_by(State_abb, State) %>%
+    count(na.rm = TRUE) %>%
+  rename(shootings = n) %>%
+  ungroup() %>%
+mutate(state_sum = sum(shootings)) %>%
+  mutate(state_avg = state_sum/50)
+
+state_data <- poliscidata::states
+state_data %<>%
+  select(stateid, pop2010, pop2010_hun_thou) %>%
+  mutate(stateid = as.character(stateid))%>%
+  mutate(stateid = str_remove_all(stateid, pattern = " "))
+
+shooting_data_state<-left_join(shooting_data_state, state_data, by = c("State_abb" = "stateid"))
+
+
+
+deaths_State <-shooting_data %>% 
+  group_by(State) %>%
+ summarise( deaths = sum(`Killed (includes shooter)`, na.rm = TRUE))
+
+ 
+
+state_data <-left_join(shooting_data_state, deaths_State)
+
+USavg<- round(mean(pull(state_data, deaths), na.rm = TRUE), 2)
+valueBox(USavg,
+         color = "white")
+```
+
+
+### **State Death Rate (per 100,000 people)**
+
+```{r}
+
+state_data %<>%
+  mutate(percapita_deaths  = deaths/pop2010_hun_thou)
+
+renderValueBox({
+  
+  shooting_data_state <- state_data %>% filter(State == input$state_selected)
+
+valueBox(format(round(pull(shooting_data_state, percapita_deaths), digits = 3), nsmall = 3),
+         color = "white")
+})
+
+
+```
+
+### **US National Death Rate (per 100,000 people)**
+
+```{r}
+renderValueBox({
+
+ US_percap <-summarize(state_data, sum(deaths, na.rm = TRUE))/ (summarize(state_data,sum(pop2010, na.rm = TRUE)) /100000)
+ 
+valueBox(value = round(US_percap, digits = 3),
+         color = "white")
+})
+```
+
+### **State Shooting Rate (per 100,000 people)**
+
+```{r}
+
+state_data %<>%
+  mutate(percapita_shootings  = shootings/pop2010_hun_thou)
+
+renderValueBox({
+  
+  shooting_data_state <- state_data %>% filter(State == input$state_selected)
+
+valueBox(format(round(pull(shooting_data_state, percapita_shootings), digits = 3), nsmall = 3),
+         color = "white")
+})
+
+
+```
+
+### **US National Shooting Rate (per 100,000 people)**
+
+```{r}
+renderValueBox({
+
+ US_percap <-summarize(state_data, sum(shootings, na.rm = TRUE))/ (summarize(state_data,sum(pop2010, na.rm = TRUE)) /100000)
+ 
+valueBox(value = round(US_percap, digits = 3),
+         color = "white")
+})
+```
+
+###
+
+Per capita calculations are based on 2010 population values.
+
+Map {data-icon="fa-map"}
+===================================== 
+
+Column
+------------------------------------- 
+    
+### 
+
+This map shows where school shootings took place in the United States between January 1970 to June 2020 according to the the open-source [Center for Homeland Defense and Security](https://www.chds.us/c/) (CHDS) [K-12 School Shooting Database](https://www.chds.us/ssdb/dataset/). Click the circles for more information.
+   
+```{r}
+# Specify the popups
+
+shooting_information0 <- paste('<div style="height:auto;line-height:1em;overflow:scroll;padding:1em">',
+                              shooting_data$Date,
+                              "<b>",
+                              shooting_data$School,
+                              "</b>",
+                              shooting_data$`Narrative (Detailed Summary/ Background)`,
+                              "</div>",
+                              sep = "<br>")
+```
+
+```{r}
+#Create the map!
+
+leaflet(shooting_data_geocoded) %>%
+  addProviderTiles(provider = providers$OpenStreetMap, group = "OpenStreetMap") %>%
+  addProviderTiles(provider = providers$Esri.WorldImagery, group = "ESRI World Imagery") %>%
+  addProviderTiles(provider = providers$Stamen.TonerLite, group = "Toner")%>%
+  addCircleMarkers(popup = ~shooting_information0,
+                     lng = ~longitude,
+                     lat = ~latitude,
+     radius = 5,
+     color = "red",
+     fillOpacity = 0.2,
+     clusterOptions = markerClusterOptions(),
+     group = "Circles") %>%
+  addMiniMap(tiles = providers$Stamen.Toner,
+              toggleDisplay = TRUE) %>%
+  addLayersControl(
+     baseGroups = c("Toner Lite",
+                    "OpenStreetMap",
+                    "ESRI World Imagery"),
+     overlayGroups = c("Circles")) %>%
+   setView(lng = -98.35, lat = 39.5, zoom = 4)
+```
+
+
+
+Tutorial {.storyboard data-icon="fa-list-ol"}
+=========================================   
+
+### **1)** Load the `flexdashboard` package.
+
+Install the package (and other supporting optional packages) if you don't have them installed already.
+
+```{r, echo=TRUE, eval=FALSE}
+install.packages("flexdashboard")
+install.packages("shiny")
+install.packages("leaflet")
+install.packages("ggplot2")
+```
+
+Once installed, load the package(s) into the `R` environment.
+
+```{r, echo=TRUE}
+library(flexdashboard)
+library(shiny)
+library(leaflet)
+library(ggplot2)
+```
+
+This all needs to be done separately in the `R` console.
+
+### **2)** Create an `RMD` document.   
+
+Dashboards can be created with `flexdashboard` in the `HTML` format. 
+
+The`flexdashboard` package uses `RMarkdown` to produce dashboards that can contain `R` output.
+
+This makes it possible to include several mediums in dashboards such as plots created with `ggplot2` or maps created with `leaflet`.
+    
+### **3)** Create an appropriate `YAML`.
+
+The use of `flexdashboard` alters the way R Markdown documents function. 
+
+R Markdown documents can be rendered into many different outputs, one of which is a dashboard. 
+The `YAML` header sets up how the document output should be created.
+
+Here is an example of a `YAML` header that creates an `HTML` document from an R Markdown document:
+
+```
+---
+title: "Untitled"
+author: "John Smith"
+date: "8/12/2020"
+output: html_document
+---
+```
+
+We used the following `YAML` for this dashboard, which importantly includes `flexdahsboard::flex_dashboard`which specifies that a dashboard should be created and `runtime:shiny` which allows for the dashboard to be interactive:
+
+```
+output: 
+  flexdashboard::flex_dashboard:
+    logo: https://icons.iconarchive.com/icons/icons8/windows-8/48/Programming-Dashboard-icon.png
+    theme: readable
+    orientation: columns
+    source_code: embed
+    vertical_layout: fill
+runtime: shiny
+```
+
+We also introduced an icon as a logo, provided a theme with a color scheme, defined the orientation (and thus order) of coded output, added a navigation bar item to give users easy access to the code used, and  limited scrolling with the `verticle_layout: fill` option.
+
+### **4)** Design the layout of the dashboard.
+
+Dashboards are inherently visual, making this step the most time intensive after content creation. To goal is to present the data in a way that is both meaningful and visually appealing.
+
+On this dashboard, we wanted to present static plots of the United States and of individual states. We also wanted to display the locations of school shootings and provide some information about school shootings. Aside from being a dashboard, we wanted to create an educational resource that was reproducible for others. Lastly, as this is a sensitive topic, we wanted to raise awareness and provide information that could help others act.
+
+Given these goals, we decided on the following page layout:
+
++ About
++ The Data
++ US Statistics
++ State Statistics
++ Map
++ Tutorial
++ Get Help
+
+The first page gives users to the opportunity to look at the data themselves. More complicated components such as the map of each incident were left alone on a single page. US and state-level statistics were separated from one another. This short tutorial on how to create the dashboard and source code were included in the dashboard with programmers at all levels in mind.
+
+### **5)** Add content to the dashboard.
+
+You can begin adding content to the dashboard once you have an initial layout in mind. Keep in mind that this will likely be an iterative process. 
+
+The R Markdown file used to create a dashboard with `flexdashboard` works similarly as it does in other cases, with a few exceptions.
+
+R code chunks can be defined like so:
+
+```
+'''{r, echo = TRUE}
+# Code chunks can be explicitly included
+'''
+
+'''{r, echo = FALSE}
+
+# Code chunks are hidden by default 
+'''
+```
+Pages and columns within pages can be defined like so:
+
+```
+Page
+=========================================   
+
+Column {data-width=500}
+-------------------------------------
+
+Column {data-width=500}
+-------------------------------------
+```
+
+### **6)** Add content to the pages and columns.
+
+Plots and other elements can be added within columns like so:
+```
+### Plot name
+
+'''{r}
+# include plot code here
+'''
+```
+Value Boxes, which are essentially text boxes, can be defined like so:
+
+```
+### ValueBoxText
+
+'''{r}
+valueBox(value = 10
+  color = "white")
+
+'''
+```
+
+Gauges, can be defined like so:
+
+```
+### GaugeText
+
+'''{r}
+flexdashboard::gauge(value = 10, 
+                       min = 0, 
+                       max = 100, 
+                    symbol = "%")
+
+'''
+```
+####
+Which will produce output like this:
+```{r, out.width= "40%", echo = FALSE}
+knitr::include_graphics(here::here("img", "gauge_output.png"))
+```
+
+### Additional Info
+As mentioned before, the `flexdashboard` metadata included in the `YAML` also alters how R Markdown documents are rendered. For more on how you can leverage both the `RMarkdown` package and the `flexdashboard` package to produce a dashboard, click [here](https://rmarkdown.rstudio.com/flexdashboard/index.html).
+
+This [supplementary resource by the Open Case Studies project](https://opencasestudies.github.io/ocs-bp-school-shootings-dashboard/) provides a case study on how to create this very dashboard in more detail.
+
+
+
+
+Get Help {data-icon="fa-exclamation-triangle"}
+=========================================   
+
+Column {data-width=800}
+-------------------------------------
+
+###
+
+**Warning Signs**
+
+From [Sandy Hook Promise](https://www.sandyhookpromise.org/gun-violence/know-the-signs-of-gun-violence/)...
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+Here is a list of potential warning signs that can signal an individual may be in crisis and/or need help:
+
++ Suddenly withdrawing from people and activities
++ Consistent bullying or intimidating others, or being bullied by others
++ Extreme mood or personality changes
++ Victim of constant social rejection
++ Talking about plans or actively making plans to harm themselves or others
++ Bringing a weapon to school – or threatening or talking about doing so
++ Bragging about or warning others about an upcoming act of violence
++ Recruiting others to join in a planned act of violence
++ Warning students to stay away from school or events
++ Expressing fascination with guns and/or school shootings
++ Expressing hopelessness about the future
++ Extreme, prolonged sadness or distress
++ Expressing or showing feelings of isolation
++ Bragging about access to guns
+
+**This list is not a comprehensive list of warning signs nor does exhibiting one of these signs indicate imminent violence.**
+
+According to the following article:
+
+Flannery, D. J., Modzeleski, W. & Kretschmar, J. M. Violence and School Shootings. Curr Psychiatry Rep 15, 331 (2013). DOI: [10.1007/s11920-012-0331-6](https://doi.org/10.1007/s11920-012-0331-6)
+
+"To date, studies of school shootings have concluded that no
+consistent and reliable profile of school shooters exist, and
+most researchers and clinicians would agree that predicting
+violent behavior is a slippery slope that will usually result in
+more false positives than false negatives."
+
+"...most shooters were depressed, had experienced some significant
+loss, felt persecuted or bullied by others, and had prior
+difficulty coping or had previously tried suicide. Most of
+the shooters did not, however, have a history of drug abuse
+or violence or cruelty to animals, common psychiatric indicators of risk, nor did they report excessive exposure to
+violence in the media (though many produced their own
+violent themes in writings or drawings)."
+
+</div>
+
+
+<style>
+div.red { background-color:#BC8F8F; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+According to the [National Institute of Mental Health (NIMH)](https://www.nimh.nih.gov/health/publications/teen-depression/index.shtml){target="_blank"}:
+
+For youths who may be at risk for suicidal behavior, visit the **National Suicide Prevention Lifeline (NSPL)** website at [www.suicidepreventionlifeline.org](www.suicidepreventionlifeline.org){target="_blank"}.
+
+Additionally, the **Crisis Text Line** is another free, confidential resource available 24 hours a day, seven days a week. Visit [www.crisistextline.org](www.crisistextline.org){target="_blank"} for more information.
+
+Also see [here](https://www.mhanational.org/depression-teens-0){target="_blank"} for more information about how to recognize and help youths experiencing symptoms of depression and warning signs of suicide.
+
+</div>
+
+
+Column {data-width=200}
+-------------------------------------
+
+### 
+
+**Respond to Warning Signs**
+
+When concerned about troubling behaviors, tell a trusted adult.
+
+
+Call **911** if you feel there is an immediate threat. 
+
+Call [+1-844-5-SAYNOW](tel:18445729669) if you would like to submit an anonymous safety concern.
+
+Text “HOME” to **741741** to text a trained crisis counselor 24 hours a day.
+
+The **National Suicide Prevention Lifeline (NSPL)** is available 24 hours a day, every day at **[1-800-273-TALK (8255)](tel:18002738255)**. 
+
+The deaf and hard of hearing can contact the **(NSPL)** via TTY at **[1-800-799-4889](tel:18007994889)**. All calls are confidential.
