@@ -1,12 +1,12 @@
 ---
-title: "Open Case Studies: School Shootings in the United States"
-css: style.css
+title: |
+  ![](www/img/interactive_logo.png){width=120px align=left style="padding-right: 20px"}
+  School Shootings in the United States
+css: www/style.css
 output:
   html_document:
     includes:
-      in_header: 
-        - header.html
-        - GA_Script.Rhtml
+       in_header: www/GA_Script.Rhtml
     self_contained: yes
     code_download: yes
     highlight: tango
@@ -18,6 +18,7 @@ output:
     toc: yes
   word_document:
     toc: yes
+runtime: shiny_prerendered
 
 ---
 
