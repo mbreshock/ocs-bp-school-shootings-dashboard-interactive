@@ -21,16 +21,16 @@ output:
 runtime: shiny_prerendered
 
 ---
-
-<style>
-#TOC {
-  background: url("https://opencasestudies.github.io/img/icon-bahi.png");
-  background-size: contain;
-  padding-top: 240px !important;
-  background-repeat: no-repeat;
-}
-</style>
-
+<!-- code for including logo in toc: -->
+<!-- <style> -->
+<!-- #TOC { -->
+<!--   background: url("https://opencasestudies.github.io/img/icon-bahi.png"); -->
+<!--   background-size: contain; -->
+<!--   padding-top: 240px !important; -->
+<!--   background-repeat: no-repeat; -->
+<!-- } -->
+<!-- </style> -->
+<!-- (not working for interactive currently, need to investigate) -->
 
 <!-- Open all links in new tab-->  
 <base target="_blank"/>  
@@ -61,7 +61,7 @@ gradethis::gradethis_setup()
 #### {.outline }
 
 ```{r, echo=FALSE, fig.link = "https://rsconnect.biostat.jhsph.edu/ocs-bp-school-shootings-dashboard/"}
-knitr::include_graphics(here("img", "aboutpagelook.png"))
+knitr::include_graphics(here("www", "img", "aboutpagelook.png"))
 ```
 
 ####
@@ -135,7 +135,7 @@ Therefore in our dashboard we will examine how often a shooter was male or attem
 
 
 ```{r, echo = FALSE, out.width= "60%"}
-knitr::include_graphics(here::here("img", "joshua-hoehne-CAokgx1GGKE-unsplash.jpg"))
+knitr::include_graphics(here::here("www", "img", "joshua-hoehne-CAokgx1GGKE-unsplash.jpg"))
 ```
 
 <span>Photo by <a href="https://unsplash.com/@mrthetrain?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Joshua Hoehne</a> on <a href="https://unsplash.com/s/photos/high-school?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
@@ -147,7 +147,7 @@ or community levels, and particularly with regard to examining the role that men
 
 
 ```{r, echo = FALSE, out.width= "60%"}
-knitr::include_graphics(here::here("img", "andre-hunter-AQ908FfdAMw-unsplash.jpg"))
+knitr::include_graphics(here::here("www", "img", "andre-hunter-AQ908FfdAMw-unsplash.jpg"))
 ```
 
 <span>Photo by <a href="https://unsplash.com/@dre0316?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Andre Hunter</a> on <a href="https://unsplash.com/s/photos/high-school?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
@@ -163,7 +163,7 @@ On the website the tabs and plots are interactive. The above dashboard allows fo
 The data about package downloads is succinctly summarized in an impactful manner.
 
 ```{r, echo = FALSE, fig.link = "https://jjallaire.shinyapps.io/shiny-crandash/#dashboardl"}
-knitr::include_graphics(here::here("img", "dashboard.png"))
+knitr::include_graphics(here::here("www", "img", "dashboard.png"))
 ```
 
 We can quickly get a sense that the `magrittr` package is among the top most widely downloaded packages on CRAN.
@@ -319,7 +319,7 @@ Another recently published [article](https://siepr.stanford.edu/sites/default/fi
 > Over **240,000** American students experienced a school shooting in the last two decades.
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img", "exposed.png"))
+knitr::include_graphics(here::here("www", "img", "exposed.png"))
 ```
 
 ##### [[source]](https://siepr.stanford.edu/sites/default/files/publications/19-036.pdf)
@@ -339,7 +339,7 @@ Thus, it is useful to better understand the characteristics of these shootings. 
 
 
 ```{r, echo = FALSE, outwidth = "40%"}
-knitr::include_graphics(here::here("img", "fernando-cferdo-6x2iKGi6SPU-unsplash.jpg"))
+knitr::include_graphics(here::here("www", "img", "fernando-cferdo-6x2iKGi6SPU-unsplash.jpg"))
 ```
 
 <span>Photo by <a href="https://unsplash.com/@cferdo?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Fernando @cferdo</a> on <a href="https://unsplash.com/s/photos/depression?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
@@ -415,13 +415,13 @@ You can create a project by going to the File menu of RStudio like so:
 
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "New_project.png"))
+knitr::include_graphics(here::here("www", "img", "New_project.png"))
 ```
 
 You can also do so by clicking the project button:
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "project_button.png"))
+knitr::include_graphics(here::here("www", "img", "project_button.png"))
 ```
 
 See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects. 
@@ -432,10 +432,19 @@ See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Project
 
 We can import the raw `.csv` file using the `read_csv()` function from the `readr` package. Let's start by only importing the first five rows with the `n_max` argument which is the max number of rows to read in from the file. By doing this, we can check for errors before reading in the entire file. Note that you would need to modify the `file` argument if you set your data files up differently. 
 
-```{r}
+```{r, eval=FALSE}
 shooting_data <- 
   readr::read_csv(file = 
                     here::here("data", "raw",
+                         "K-12_SSDB_(Public)-K-12_SSDB_(Public)_Linked.csv"), 
+                  n_max = 5)
+shooting_data
+```
+
+```{r, echo=FALSE}
+shooting_data <- 
+  readr::read_csv(file = 
+                    here::here("www", "data", "raw",
                          "K-12_SSDB_(Public)-K-12_SSDB_(Public)_Linked.csv"), 
                   n_max = 5)
 shooting_data
@@ -447,9 +456,16 @@ We see the first row is a sentence that states:
 
 We do not need this information, so we can skip it using the `skip` argument of `read_csv()` function. Specifically, we specify that we wish to only skip 1 row with `skip = 1`. We can also specify that the next row should be used for column names using the `col_names = TRUE` argument. 
 
-```{r}
+```{r, eval=FALSE}
 shooting_data <- 
   readr::read_csv(file = here::here("data", "raw",
+                                    "K-12_SSDB_(Public)-K-12_SSDB_(Public)_Linked.csv"), 
+                  col_names = TRUE, skip = 1)
+```
+
+```{r, echo=FALSE}
+shooting_data <- 
+  readr::read_csv(file = here::here("www", "data", "raw",
                                     "K-12_SSDB_(Public)-K-12_SSDB_(Public)_Linked.csv"), 
                   col_names = TRUE, skip = 1)
 ```
@@ -491,19 +507,19 @@ googlesheets4::gs4_deauth()
 Great, now we would need to get the shared link from the document. We could previously do so by clicking on the link to the actually Google Sheets document like so:
 
 ```{r, echo = FALSE, outwidth = "50%"}
-knitr::include_graphics(here::here("img", "gettodoc.png"))
+knitr::include_graphics(here::here("www", "img", "gettodoc.png"))
 ```
 
 Then we can click on the "share" button to get access to the link:
 
 ```{r, echo = FALSE, outwidth = "50%"}
-knitr::include_graphics(here::here("img", "gettoshare.png"))
+knitr::include_graphics(here::here("www", "img", "gettoshare.png"))
 ```
 
 Finally we can click on "copy link" button to copy the link:
 
 ```{r, echo = FALSE, outwidth = "50%"}
-knitr::include_graphics(here::here("img", "getlink.png"))
+knitr::include_graphics(here::here("www", "img", "getlink.png"))
 ```
 
 Once you copy a link like this, you can use the `read_sheet()` function to import the data by simply pasting the link in quotes, like so:
@@ -522,14 +538,18 @@ This is a great option, however, we chose not to do this for this case study to 
 To allow users to skip import we will save the data as an RDA file:
 
 ```{r, eval = FALSE}
-save(shooting_data, file = here::here("data", "imported", "shooting_data.rda"))
+save(shooting_data, file = here::here("www", "data", "imported", "shooting_data.rda"))
 ```
 
 # **Data Exploration and Wrangling**
 ***
 If you have been following along but stopped, we could load our imported data like so:
-```{r}
+```{r, eval=FALSE}
 load(here::here("data", "imported", "shooting_data.rda"))
+```
+
+```{r, echo=FALSE}
+load(here::here("www", "data", "imported", "shooting_data.rda"))
 ```
 
 #### {.click_to_expand_block}
@@ -554,8 +574,12 @@ If the package does not work for you, an RDA file (stands for R data) of the dat
 
 We have put this file in a directory called "imported" within a directory called "data" within our working directory (which has a .Rproj file).
 
-```{r}
+```{r, eval=FALSE}
 load(here::here("data", "imported", "shooting_data.rda"))
+```
+
+```{r, echo=FALSE}
+load(here::here("www", "data", "imported", "shooting_data.rda"))
 ```
 
 <hr style="height:1px;border:none;color:#333;background-color:#333;" />
@@ -565,13 +589,13 @@ You can create a project by going to the File menu of RStudio like so:
 
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "New_project.png"))
+knitr::include_graphics(here::here("www", "img", "New_project.png"))
 ```
 
 You can also do so by clicking the project button:
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "project_button.png"))
+knitr::include_graphics(here::here("www", "img", "project_button.png"))
 ```
 
 See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects. 
@@ -611,7 +635,7 @@ Now we will combine this with our data using the `left_join()` function from the
 There are several ways to join data using the `dplyr` package.
 
 ```{r, echo = FALSE, outwidth = "50%"}
-knitr::include_graphics(here::here("img", "join.png"))
+knitr::include_graphics(here::here("www", "img", "join.png"))
 ```
 
 ##### [[source]](https://dplyr.tidyverse.org/reference/join.html)
@@ -862,7 +886,7 @@ If you were to do this process yourself, you could get an API key [here](https:/
 Then you need to enable the maps and places APIs, by clicking on the boxes next to each:
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "enable.png"))
+knitr::include_graphics(here::here("www", "img", "enable.png"))
 ```
 
 Then you would register like so after copying the API key: (Note this is a fake key)
@@ -891,14 +915,14 @@ shooting_data <-
 This results in tibble called `coords` being added to our `shooting_data` tibble. That's right, we can have a tibble as a column or variable within a tibble.   Using the `glimpse` function again, and looking at the last few variables, we can see that now the last variable listed is `coords` of class `<tibble>`.
 
 ```{r,echo = FALSE, out.width="90%"}
-knitr::include_graphics(here::here("img", "shooting_data_coords.png"))
+knitr::include_graphics(here::here("www", "img", "shooting_data_coords.png"))
 ```
 
 If we take a look at the first couple of values of the `coords` tibble, we see a tibble that looks like this:
 
 
 ```{r,echo = FALSE, out.width="30%"}
-knitr::include_graphics(here::here("img", "coords.png"))
+knitr::include_graphics(here::here("www", "img", "coords.png"))
 ```
 
 It would be better if each of these were their own columns in the tibble, so we will create new `longitude` and `latitude` variables again using the `mutate` function like so:
@@ -923,7 +947,7 @@ shooting_data <-
 Now using `glimpse()` and looking at the last several variables, we can see that we no longer have a `coords` variable, but we do have two variables called `longitude` and `latitude` that are of class double as indicated by the `<dbl>`:
 
 ```{r,echo = FALSE, out.width="80%"}
-knitr::include_graphics(here::here("img", "double.png"))
+knitr::include_graphics(here::here("www", "img", "double.png"))
 ```
 
 Now we will save the geocoded data in the `wrangled` directory of our `data` directory using the `save` function.
@@ -933,11 +957,11 @@ This requires listing the R object, followed by the path for where the file shou
 
 ```{r, eval = FALSE}
 shooting_data_wrangled_pre_map <- shooting_data
-save(shooting_data_wrangled_pre_map, file = here("data", "wrangled",
+save(shooting_data_wrangled_pre_map, file = here("www", "data", "wrangled",
                              "shooting_data_wrangled_pre_map.rda"))
 
 readr::write_csv(shooting_data_wrangled_pre_map, 
-                 file = here("data", "wrangled",
+                 file = here("www", "data", "wrangled",
                              "shooting_data_wrangled_pre_map.csv"))
 ```
 
@@ -953,12 +977,15 @@ wrangled_rda("ocs-bp-school-shootings-dashboard")
 You can also access this data [here](https://github.com/opencasestudies/ocs-bp-school-shootings-dashboard/blob/master/data/wrangled).
 
 To load the data, you may double click the downloaded `.rda` file in RStudio, or put the downloaded file in the appropriate directory and use the following command.
-
-```{r}
+```{r, eval=FALSE}
 load(file = here("data", "wrangled",
                              "shooting_data_wrangled_pre_map.rda"))
 ```
 
+```{r, echo=FALSE}
+load(file = here("www", "data", "wrangled",
+                             "shooting_data_wrangled_pre_map.rda"))
+```
 
 
 ## **Geometry lists with the `sf` package**
@@ -1086,7 +1113,7 @@ shooting_data_wrangled_for_map[1:4]
 Notice how the `geometry` variables are different from what they were originally with this coordinate system:
 
 ```{r, echo = FALSE, out.width= "90%"}
-knitr::include_graphics(here::here("img", "geometry.png"))
+knitr::include_graphics(here::here("www", "img", "geometry.png"))
 ```
 
 Next, we separate the `geometry` variable into `longitude` and `latitude` variables again. We can use the ` st_coordinates()` function from the `sf` package to extract the coordinates from our tibble as a matrix.
@@ -1129,11 +1156,11 @@ Finally, we will save our wrangled data, again using `save()` and we will also w
 ```{r, eval = FALSE}
 
 save(shooting_data_wrangled_for_map, 
-          file = here("data", "wrangled",
+          file = here("www", "data", "wrangled",
                       "shooting_data_wrangled_for_map.rda"))
 
 write_csv(shooting_data_wrangled_for_map, 
-          file = here("data", "wrangled",
+          file = here("www", "data", "wrangled",
                       "shooting_data_wrangled_for_map.csv"))
 ```
 
@@ -1142,9 +1169,15 @@ write_csv(shooting_data_wrangled_for_map,
 *** 
 
 If you have been following along but stopped, we could load our data like so:
-```{r}
+```{r, eval=FALSE}
 load(here::here("data", "wrangled", "shooting_data_wrangled_pre_map.rda"))
 load(here::here("data", "wrangled", "shooting_data_wrangled_for_map.rda"))
+
+```
+
+```{r, echo=FALSE}
+load(here::here("www", "data", "wrangled", "shooting_data_wrangled_pre_map.rda"))
+load(here::here("www", "data", "wrangled", "shooting_data_wrangled_for_map.rda"))
 
 ```
 
@@ -1173,9 +1206,15 @@ If the package does not work for you, two RDA files (stands for R data) of the d
 
 We have put these files in a directory called "wrangled" within a directory called "data" within our working directory (which has a .Rproj file).
 
-```{r}
+```{r, eval=FALSE}
 load(here::here("data", "wrangled", "shooting_data_wrangled_pre_map.rda"))
 load(here::here("data", "wrangled", "shooting_data_wrangled_for_map.rda"))
+
+```
+
+```{r, echo=FALSE}
+load(here::here("www", "data", "wrangled", "shooting_data_wrangled_pre_map.rda"))
+load(here::here("www", "data", "wrangled", "shooting_data_wrangled_for_map.rda"))
 
 ```
 
@@ -1186,13 +1225,13 @@ You can create a project by going to the File menu of RStudio like so:
 
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "New_project.png"))
+knitr::include_graphics(here::here("www", "img", "New_project.png"))
 ```
 
 You can also do so by clicking the project button:
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "project_button.png"))
+knitr::include_graphics(here::here("www", "img", "project_button.png"))
 ```
 
 See [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) to learn more about using RStudio projects. 
@@ -1716,7 +1755,7 @@ Good, now we know the overall percentage for the events that unfortunately resul
 Next, we combine this with the rest of our data using the `bind_rows()` function from the `dplyr` package which appends a tibble to another.
 
 ```{r, echo = FALSE, outwidth = "40%"}
-knitr::include_graphics(here::here("img", "bindrows.png"))
+knitr::include_graphics(here::here("www", "img", "bindrows.png"))
 ```
 
 ##### [[source]](https://rstudio.com/resources/cheatsheets/)
@@ -2012,7 +2051,7 @@ leaflet(data = mapStates) %>% addTiles() %>%
 Here is an screenshot of a `shiny` app.
 
 ```{r, echo = FALSE, out.width= "60%"}
-knitr::include_graphics(here::here("img", "game.png"))
+knitr::include_graphics(here::here("www", "img", "game.png"))
 ```
 
 ##### [[source]](https://shiny.rstudio.com/gallery/hex-memory.html)
@@ -2069,7 +2108,7 @@ In our case we are interested in rendering our Rmd document into a website. The 
 Although LMLs tend to be quite similar, here you can see some of the differences in syntax:
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "syntax.png"))
+knitr::include_graphics(here::here("www", "img", "syntax.png"))
 ```
 
 ##### [[source]](https://en.wikipedia.org/wiki/Lightweight_markup_language)
@@ -2091,7 +2130,7 @@ Here are some major R Markdown features to keep in mind for `flexdashboard`:
 
 Like so:
 ```{r, echo = FALSE, out.width = "30%"}
-knitr::include_graphics(here::here("img", "yaml.png"))
+knitr::include_graphics(here::here("www", "img", "yaml.png"))
 ```
 
 ##### [[source]](https://ourcodingclub.github.io/tutorials/rmarkdown/)
@@ -2103,7 +2142,7 @@ Whatever code you put in the YAML header will influence the rest of the document
 Other more complicated features can be included. For example, we can specify that we are creating a dashboard with `flexdashboard` and we can specify how we want the layout of our dashboard to be displayed like so:
 
 ```{r, echo = FALSE, out.width = "30%"}
-knitr::include_graphics(here::here("img", "yaml_dashboard.png"))
+knitr::include_graphics(here::here("www", "img", "yaml_dashboard.png"))
 ```
 
 ##### [[source]](https://rmarkdown.rstudio.com/flexdashboard/layouts.html)
@@ -2123,7 +2162,7 @@ If this includes text like so: `### text`, this adds header text to the componen
 `"```{r}"` on it's own line followed by your code, followed by `"```"`. This creates what is called a code chunk.
 
 ```{r, echo = FALSE, out.width = "30%"}
-knitr::include_graphics(here::here("img", "code_chunk.png"))
+knitr::include_graphics(here::here("www", "img", "code_chunk.png"))
 ```
 
 ##### [[source]](https://ourcodingclub.github.io/tutorials/rmarkdown/)
@@ -2144,7 +2183,7 @@ valueBox(value = 10
 
 Here you can see a more thorough example which includes icons:
 ```{r, echo = FALSE, out.width = "60%"}
-knitr::include_graphics(here::here("img", "valuebox.png"))
+knitr::include_graphics(here::here("www", "img", "valuebox.png"))
 ```
 
 ##### [[source]](https://rmarkdown.rstudio.com/flexdashboard/using.html#value_boxes)
@@ -2167,13 +2206,13 @@ flexdashboard::gauge(value = 10,
 
 This creates the following output:
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "gauge_output.png"))
+knitr::include_graphics(here::here("www", "img", "gauge_output.png"))
 ```
 
 Here is a more complicated example:
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "gauge.png"))
+knitr::include_graphics(here::here("www", "img", "gauge.png"))
 ```
 
 ##### [[source]](https://rmarkdown.rstudio.com/flexdashboard/using.html#value_boxes)
@@ -2189,7 +2228,7 @@ To add multiple columns the following syntax is used `---------` for each  colum
 Additional features about the columns, such as the width can be specified using brackets`{}`like in the example below. Note that the word `Column` isn't necessary. In this example two columns are created that will be oriented next to one another and elements within the columns will be placed top to bottom. 
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "columns.png"))
+knitr::include_graphics(here::here("www", "img", "columns.png"))
 ```
 
 ##### [[source]](https://rmarkdown.rstudio.com/flexdashboard/layouts.html)
@@ -2203,7 +2242,7 @@ To add multiple rows - the yaml needs to state that the orientation is for rows 
 Again the word `Row` is not actually necessary.
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "rows.png"))
+knitr::include_graphics(here::here("www", "img", "rows.png"))
 ```
 
 ##### [[source]](https://rmarkdown.rstudio.com/flexdashboard/layouts.html)
@@ -2223,7 +2262,7 @@ Column {.tabset}
 In this example, two columns are created and then two tabs are added to the second column.
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "tab.png"))
+knitr::include_graphics(here::here("www", "img", "tab.png"))
 ```
 
 ##### [[source]](https://rmarkdown.rstudio.com/flexdashboard/layouts.html)
@@ -2236,7 +2275,7 @@ Interactive elements can be added to dashboards. In our dashboard, we will use p
 Here is an example of a YAML that includes this:
 
 ```{r, echo = FALSE, out.width = "30%"}
-knitr::include_graphics(here::here("img", "shiny_yml.png"))
+knitr::include_graphics(here::here("www", "img", "shiny_yml.png"))
 ```
 
 ***
@@ -2249,19 +2288,19 @@ You have a few options to publish your dashboard:
 1) If your dashboard is not interactive (does not use shiny) or uses certain widgets like the `datatable()` function from the `DT` package, you just need to knit your R Markdown file into an html file.
 
 ```{r, echo = FALSE, out.width="50%", fig.align="center"}
-knitr::include_graphics(here::here("img", "knit.png"))
+knitr::include_graphics(here::here("www", "img", "knit.png"))
 ```
 
 Then you can host this on GitHub if you choose by changing the GitHub Pages settings of your repository:
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "githubpages.png"))
+knitr::include_graphics(here::here("www", "img", "githubpages.png"))
 ```
 
 2) If your dashboard is interactive (uses shiny), you can host it on  https://www.shinyapps.io/ after making an account. To do this you need to install the `rsconnect` package and after you have made an account and configured it, you can use the publish button of the RStudio IDE which looks like this on the upper right corner:
 
 ```{r, echo = FALSE, out.width="40%", fig.align="center"}
-knitr::include_graphics(here::here("img", "publish.png"))
+knitr::include_graphics(here::here("www", "img", "publish.png"))
 ```
 
 Note that this also requires authentication using tokens. 
@@ -2309,7 +2348,7 @@ The link to the dashboard described in this section is located  [here](https://r
 We want to create a dashboard that has several tabs that will look like this:
 
 ```{r, echo = FALSE, fig.link = "https://rsconnect.biostat.jhsph.edu/ocs-bp-school-shootings-dashboard/"}
-knitr::include_graphics(here::here("img", "dashboard_school.png"))
+knitr::include_graphics(here::here("www", "img", "dashboard_school.png"))
 ```
 
 ## **Getting started**
@@ -2318,7 +2357,7 @@ knitr::include_graphics(here::here("img", "dashboard_school.png"))
 The first thing we need to do to create our dashboard is to create a new .Rmd document like so in R Studio:
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "newrmd.png"))
+knitr::include_graphics(here::here("www", "img", "newrmd.png"))
 ```
 
 
@@ -2328,7 +2367,7 @@ knitr::include_graphics(here::here("img", "newrmd.png"))
 Next we need to update the YAML header to look like this:
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "our_yaml.png"))
+knitr::include_graphics(here::here("www", "img", "our_yaml.png"))
 ```
 
 
@@ -2347,7 +2386,7 @@ The next four lines are arguments for how the dashboard should be created.
 2. `theme:` allows you to specify how the dashboard will look in general. Note that this can be used to modify the general look of any type of R Markdown output, not just dashboards created with `flexdashboard`. See [here](https://www.datadreaming.org/post/r-markdown-theme-gallery/) for a list of options. In our case, the theme is called readable and will create documents that look like this:
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "readable.png"))
+knitr::include_graphics(here::here("www", "img", "readable.png"))
 ```
 
 ##### [[source]](https://www.datadreaming.org/post/r-markdown-theme-gallery/)
@@ -2396,11 +2435,11 @@ For more information about what these packages were used for, see the beginning 
 
 ```{r, eval = FALSE}
 shooting_data <- 
-  read_csv(here("data", "wrangled",
+  read_csv(here("www", "data", "wrangled",
                 "shooting_data_wrangled_pre_map.csv"))
 
 shooting_data_for_map <- 
-  read_csv(here("data", "wrangled",
+  read_csv(here("www", "data", "wrangled",
                 "shooting_data_wrangled_for_map.csv"))
 ```
 
@@ -2417,7 +2456,7 @@ First, we create 7 divisions for these main pages. We add icons to each from [Fo
 Use this [link](https://fontawesome.com/icons?d=gallery) to find other icon options. If you click on the "start using this icon" button it will take you to a page with HTML code like this:  
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "fontawesome.png"))
+knitr::include_graphics(here::here("www", "img", "fontawesome.png"))
 ```
 
 #### [[source]](https://fontawesome.com/icons/database?style=solid)
@@ -2460,7 +2499,7 @@ Here, we create content in the About page.
 This is what the page will look like:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "aboutpagelook.png"))
+knitr::include_graphics(here::here("www", "img" , "aboutpagelook.png"))
 ```
 
 ### **Overall Structure**
@@ -2469,7 +2508,7 @@ knitr::include_graphics(here::here("img" , "aboutpagelook.png"))
 Here is the overall structure for this page:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "about_page_structure.png"))
+knitr::include_graphics(here::here("www", "img" , "about_page_structure.png"))
 ```
 
 ### **Details**
@@ -2515,7 +2554,7 @@ Column {data-width = 30}
 Recall that `###` is used to add elements to columns and rows. Note that there is no text next to the `###` syntax that designates an element of our dashboard. In the previous examples, a header was used like so `### header`:
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "tab.png"))
+knitr::include_graphics(here::here("www", "img", "tab.png"))
 ```
 
 [[source](https://rmarkdown.rstudio.com/flexdashboard/layouts.html)]
@@ -2526,7 +2565,7 @@ We do not actually want a header now, so we can simply use `###` without any tex
 Next, we add a block of text describing the dashboard to the first column and we will add an image to the second column like the following. Notice that two asterisks `**` around text makes them appear as bold and one `*` makes it appear as italic. See [this RStudio cheatsheet](https://rmarkdown.rstudio.com/lesson-15.html) for some basic Markdown syntax for stylizing text:
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("img", "markdownsyntax.png"))
+knitr::include_graphics(here::here("www", "img", "markdownsyntax.png"))
 ```
 
 [[source](https://rmarkdown.rstudio.com/lesson-15.html)] 
@@ -2600,7 +2639,7 @@ Column {data-width=30}
 
 
 '''{r, echo=FALSE, fig.cap="[Photograph by Nathan Dumlao](https://unsplash.com/photos/xPHmmVKS8lM)"}
-knitr::include_graphics(here::here("img", "nathan-dumlao-xPHmmVKS8lM-unsplash.jpg"))
+knitr::include_graphics(here::here("www", "img", "nathan-dumlao-xPHmmVKS8lM-unsplash.jpg"))
 '''
 ```
 
@@ -2613,7 +2652,7 @@ Notice the `echo = FALSE` specification for the code chunk which causes the code
 The image is included using the `include_graphics()` function from the `knitr` package. We need to specify where this image is located for this to work. You can do this without specifying a path if the image file is in the same directory as your `.Rmd` file that you are using to create your dashboard. However using the `here()` function from the `here` package we can organize our files a bit. This function will automatically start the path wherever we have included an RStudio project file, this can be done in RStudio like so:
 
 ```{r, echo=FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img" , "project.png"))
+knitr::include_graphics(here::here("www", "img" , "project.png"))
 ```
 
 If you are new to using RStudio projects, please see this [link](https://r4ds.had.co.nz/workflow-projects.html) for more information.
@@ -2621,7 +2660,7 @@ If you are new to using RStudio projects, please see this [link](https://r4ds.ha
 Then if we create a directory or folder called `img` and place our image files in this directory, then we can specify the full path to this file on our computer, by just using `here::here("img", "name_of_image.png")`. The `include_graphics()` function works for a variety image file types. 
 
 ```{r, echo=FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img" , "newdir.png"))
+knitr::include_graphics(here::here("www", "img" , "newdir.png"))
 ```
 
 Also you may have noticed the  `<style>` html code to add a blue and green background to portions of the text. 
@@ -2670,7 +2709,7 @@ Let's create a page about the data that we are using.
 This is what the page will look like:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "The_Data_Page.png"))
+knitr::include_graphics(here::here("www", "img" , "The_Data_Page.png"))
 ```
 
 ### **Overall Structure**
@@ -2679,7 +2718,7 @@ knitr::include_graphics(here::here("img" , "The_Data_Page.png"))
 Here is the overall structure for this page:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "Data_page_structure.png"))
+knitr::include_graphics(here::here("www", "img" , "Data_page_structure.png"))
 ```
 
 ### **Details**
@@ -2739,7 +2778,7 @@ We also want to use the `options` argument to specify how the data is rendered. 
 We will also add a caption with a link to the original data using the `tags()` and `withTags()` functions of the `htmltools` package. Different options for types of tags can be selected using the `$`.
 
 ```{r, echo = FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img", "tags.png"))
+knitr::include_graphics(here::here("www", "img", "tags.png"))
 ```
 
 ```{r, eval=FALSE}
@@ -2812,7 +2851,7 @@ Column {data-width=30}
 ###
 
 '''{r, echo=FALSE, fig.cap="[Photograph by Rubén Rodriguez](https://unsplash.com/photos/IXTvnOOSTyU)"}
-knitr::include_graphics(here::here("img", "ruben-rodriguez-IXTvnOOSTyU-unsplash.jpg"))
+knitr::include_graphics(here::here("www", "img", "ruben-rodriguez-IXTvnOOSTyU-unsplash.jpg"))
 '''
 ```
 
@@ -2830,7 +2869,7 @@ Let's create a page for **US Statistics** we would like to share.
 This is what the page will look like:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "US_Statistics_page.png"))
+knitr::include_graphics(here::here("www", "img" , "US_Statistics_page.png"))
 ```
 
 ### **Overall Structure**
@@ -2839,7 +2878,7 @@ knitr::include_graphics(here::here("img" , "US_Statistics_page.png"))
 Here is the overall structure for this page which uses a tab layout:
 
 ```{r, echo=FALSE, out.width="90%"}
-knitr::include_graphics(here::here("img" , "US_stats_page_overview.png"))
+knitr::include_graphics(here::here("www", "img" , "US_stats_page_overview.png"))
 ```
 
 
@@ -2864,7 +2903,7 @@ Column {data-width=70 .tabset .tabset-fade}
 After having specified the `.tabset` and `.tabset-fade` options, we can create new tabs in the same way we would add elements to our dashboard with the `###` syntax. Just like in this example:
 
 ```{r, echo=FALSE, out.width="60%"}
-knitr::include_graphics(here::here("img" , "tab.png"))
+knitr::include_graphics(here::here("www", "img" , "tab.png"))
 ```
 
 [[source](https://rmarkdown.rstudio.com/flexdashboard/layouts.html)]
@@ -3170,7 +3209,7 @@ Let's create a page for **State Statistics** we would like to share. Importantly
 This is what the page will look like:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "State_Statistics_page.png"))
+knitr::include_graphics(here::here("www", "img" , "State_Statistics_page.png"))
 ```
 
 ### **Overall Structure**
@@ -3180,7 +3219,7 @@ knitr::include_graphics(here::here("img" , "State_Statistics_page.png"))
 Here is the overall structure for this page:
 
 ```{r, echo=FALSE, out.width="90%"}
-knitr::include_graphics(here::here("img" , "states_stats_page_overview.png"))
+knitr::include_graphics(here::here("www", "img" , "states_stats_page_overview.png"))
 ```
 
 **Note**: the other value Boxes are not included in this image. You can see that the `renderPlot()` function is used for plots and the `renderValueBox()` function is used for value boxes. 
@@ -3546,7 +3585,7 @@ Note that `leaflet` can require a lot of computational power depending on the ty
 This is what the page will look like:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "The_Map_Page.png"))
+knitr::include_graphics(here::here("www", "img" , "The_Map_Page.png"))
 ```
 
 ### **Overall Structure**
@@ -3555,7 +3594,7 @@ knitr::include_graphics(here::here("img" , "The_Map_Page.png"))
 The overall structure for this page is simple. There is just one column ,which will contain the map.
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "map_page_structure.png"))
+knitr::include_graphics(here::here("www", "img" , "map_page_structure.png"))
 ```
 
 ### **Details**
@@ -3676,7 +3715,7 @@ Here, we create a **Tutorial** page that links to this case study. This provides
 This is what the page will look like:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "the_Tutorial_Page.png"))
+knitr::include_graphics(here::here("www", "img" , "the_Tutorial_Page.png"))
 ```
 
 
@@ -3688,7 +3727,7 @@ To create this page we will use a special layout called a [storyboard](https://e
 Here you see the top part of the overall structure:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "tutorialStructure.png"))
+knitr::include_graphics(here::here("www", "img" , "tutorialStructure.png"))
 ```
 
 ### **Details**
@@ -3850,7 +3889,7 @@ flexdashboard::gauge(value = 10,
 ####
 Which will produce output like this:
 '''{r, out.width= "40%", echo = FALSE}
-knitr::include_graphics(here::here("img", "gauge_output.png"))
+knitr::include_graphics(here::here("www", "img", "gauge_output.png"))
 '''
 
 ### Additional Info
@@ -3875,7 +3914,7 @@ We create a **Get Help** page to spread awareness on this important public healt
 This is what the page will look like:
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "The_Get_Help_Page.png"))
+knitr::include_graphics(here::here("www", "img" , "The_Get_Help_Page.png"))
 ```
 
 
@@ -3883,7 +3922,7 @@ knitr::include_graphics(here::here("img" , "The_Get_Help_Page.png"))
 ***
 
 ```{r, echo=FALSE}
-knitr::include_graphics(here::here("img" , "The_Get_Help_Page_structure.png"))
+knitr::include_graphics(here::here("www", "img" , "The_Get_Help_Page_structure.png"))
 ```
 
 
