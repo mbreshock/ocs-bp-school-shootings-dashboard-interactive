@@ -2513,22 +2513,46 @@ knitr::include_graphics(here::here("www", "img" , "about_page_structure.png"))
 
 ### **Details**
 ***
-***
 <details> <summary> Click here if you would like to see all of the code for this page. </summary>
 
-On this page we will have two columns - one which will be wider than the other.  Size specifications on `flexdashboard` are unit-less; the width of any column included on a page is a function of the width set for a column against the sum of widths for all columns on that page. If we set columns sizes of 600 and 300 on a page with two columns, one column will be twice as large as the other column. We want the left column to be quite a bit larger than the right, so we will set the left as `70` and the right as `30`.
+On this page we will have two columns - one which will be wider than the other.  Size specifications on `flexdashboard` are unit-less; the width of any column included on a page is a function of the width set for a column against the sum of widths for all columns on that page. If we set columns sizes of 600 and 300 on a page with two columns, one column will be twice as large as the other column. We want the left column to be quite a bit larger than the right, so we will set the left as `70` and the right as `30`. Can you recall how we would make these columns?
 
 
-#### {.recall_code_question_block}
-<b><u> Question Opportunity </u></b>
+```
+About {data-icon="fa-question-circle"}
+===================================== 
 
-Can you recall how we would make these columns?
+**LINE 1**
+-------------------------------------
+
+###
+
+**LINE 2**
+-------------------------------------
+
+###
+
+```
+
+```{r ourdash_quiz, echo = FALSE}
+quiz(caption = "This question refers to the chunk of code provided above.",
+  question("Which option would create the dashboard as described above?",
+    answer("`Column {data-width = 600}` `Column {data-width = 300}`",
+           message = "This would make the left column twice the size of the right. Here we want the left column to be more than twice the size of the right."),
+    answer("`Column {data-width = 300}` `Column {data-width = 600}`",
+           message = "This would make the left column half the size of the right. We want the left column to be more than twice the size of the right."),
+    answer("`Column {data-width = 30}` `Column {data-width = 70}`", 
+           message = "This would make the left column less than half the size of the right. We want the left column to be more than twice the size of the right."),
+    answer("`Column {data-width = 70}` `Column {data-width = 30}`", 
+           correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  )
+)
+```
 
 ***
-<details> <summary> Click here to reveal the code. </summary>
-
-
-
+<details> <summary> Click here to see the final code. </summary>
 ```
 About {data-icon="fa-question-circle"}
 ===================================== 
@@ -2544,12 +2568,42 @@ Column {data-width = 30}
 ###
 
 ```
-
 </details>
-
+***
+</details>
 ***
 
-####
+<!-- #### {.recall_code_question_block} -->
+<!-- <b><u> Question Opportunity </u></b> -->
+
+<!-- Can you recall how we would make these columns? -->
+
+<!-- *** -->
+<!-- <details> <summary> Click here to reveal the code. </summary> -->
+
+
+
+<!-- ``` -->
+<!-- About {data-icon="fa-question-circle"} -->
+<!-- =====================================  -->
+
+<!-- Column {data-width = 70} -->
+<!-- ------------------------------------- -->
+
+<!-- ### -->
+
+<!-- Column {data-width = 30} -->
+<!-- ------------------------------------- -->
+
+<!-- ### -->
+
+<!-- ``` -->
+
+<!-- </details> -->
+
+<!-- *** -->
+
+<!-- #### -->
 
 Recall that `###` is used to add elements to columns and rows. Note that there is no text next to the `###` syntax that designates an element of our dashboard. In the previous examples, a header was used like so `### header`:
 
