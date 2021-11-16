@@ -1,0 +1,17 @@
+---
+title: "Maintenance Notes"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Exercise chunks
+
+## Our Dashboard
+### The About Page: Details 
+
+* `ourdash_quiz`
+
+# Other Notes
