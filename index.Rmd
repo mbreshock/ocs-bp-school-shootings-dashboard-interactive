@@ -2511,12 +2511,19 @@ Here is the overall structure for this page:
 knitr::include_graphics(here::here("www", "img" , "about_page_structure.png"))
 ```
 
+
+
+
 ### **Details**
 ***
 <details> <summary> Click here if you would like to see all of the code for this page. </summary>
 
+#### {.recall_code_question_block}
+<b><u> Question Opportunity </u></b>
+
 On this page we will have two columns - one which will be wider than the other.  Size specifications on `flexdashboard` are unit-less; the width of any column included on a page is a function of the width set for a column against the sum of widths for all columns on that page. If we set columns sizes of 600 and 300 on a page with two columns, one column will be twice as large as the other column. We want the left column to be quite a bit larger than the right, so we will set the left as `70` and the right as `30`. Can you recall how we would make these columns?
 
+####
 
 ```
 About {data-icon="fa-question-circle"}
