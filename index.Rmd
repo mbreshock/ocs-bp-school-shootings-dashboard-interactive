@@ -1725,8 +1725,6 @@ per_shooting_plot <- deaths_per_event %>%
 
 ***
 
-
-
 ```{r}
 per_shooting_plot 
 ```
