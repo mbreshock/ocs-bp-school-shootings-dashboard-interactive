@@ -1636,6 +1636,69 @@ Next, we will make a plot of the number of deaths per school shooting based on t
 
 See if you can come up with the code for the plot.
 
+####
+
+```{r, echo=FALSE}
+save(shooting_data, file = here::here("www", "exercise", "dav_code1.rda"))
+```
+
+```{r dav_code1-setup}
+library(tidyverse)
+library(magrittr)
+
+load(here::here("www", "exercise", "dav_code1.rda"))
+```
+
+```{r dav_code1, exercise=TRUE}
+deaths_per_event <-
+  shooting_data %>%
+  
+per_shooting_plot <- deaths_per_event %>%
+  
+```
+
+```{r dav_code1-hint-1}
+deaths_per_event <-
+  shooting_data %>%
+  group_by(`Killed (includes shooter)`) %>%
+  count() %>%
+  ungroup()
+  
+per_shooting_plot <- deaths_per_event %>%
+  
+```
+
+```{r dav_code1-hint-2}
+deaths_per_event <-
+  shooting_data %>%
+  group_by(`Killed (includes shooter)`) %>%
+  count() %>%
+  ungroup()
+  
+per_shooting_plot <- deaths_per_event %>%
+  ggplot(aes(y = `Killed (includes shooter)`, x = n)) +
+    geom_col(fill = "black") +
+  
+```
+
+```{r dav_code1-solution}
+deaths_per_event <-
+  shooting_data %>%
+  group_by(`Killed (includes shooter)`) %>%
+  count() %>%
+  ungroup()
+
+per_shooting_plot <- deaths_per_event %>%
+  ggplot(aes(y = `Killed (includes shooter)`, x = n)) +
+    geom_col(fill = "black") +
+    theme_minimal() +
+    labs(title = "Deaths per School Shooting",
+         subtitle = "United States",
+         x = "School Shootings",
+         y = "")
+```
+
+
 ***
 
 <details> <summary> Click here to reveal the answer. </summary>
@@ -1648,9 +1711,9 @@ deaths_per_event <-
   count() %>%
   ungroup()
 
-per_shooting_plot <-deaths_per_event %>%
+per_shooting_plot <- deaths_per_event %>%
   ggplot(aes(y = `Killed (includes shooter)`, x = n)) +
-    geom_col(fill = "black")+
+    geom_col(fill = "black") +
     theme_minimal() +
     labs(title = "Deaths per School Shooting",
          subtitle = "United States",
@@ -1662,7 +1725,7 @@ per_shooting_plot <-deaths_per_event %>%
 
 ***
 
-####
+
 
 ```{r}
 per_shooting_plot 
