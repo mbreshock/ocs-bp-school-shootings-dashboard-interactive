@@ -2016,6 +2016,133 @@ Now try to perform variations of these calculations to calculate other statistic
 
 ***
 
+####
+
+```{r, echo=FALSE}
+save(shooting_data, file = here::here("www", "exercise", "dav_exercise1.rda"))
+```
+
+#### {.exercise_block}
+
+Write some code that will calculate the percentage of shooters that were male as well as the percentage of school shootings that report gender.
+
+*Note: replace the underscores("\_") with your code with one character per "\_". Click "Submit Answer" to check your answer. *
+
+```{r dav_exercise1-setup}
+library(tidyverse)
+
+load(here::here("www", "exercise", "dav_exercise1.rda"))
+```
+
+```{r dav_exercise1, exercise=TRUE, eval=FALSE}
+# step 1
+gender <- paste(as.character(round(100 * (sum(
+    case_when(pull(_____________, `______________`) == "____" ~ TRUE,
+                                                        TRUE ~ FALSE),
+                                      na.rm = TRUE)
+    /
+      sum(pull(_____________, `______________`)>=_, na.rm = TRUE)),
+    1)), "%")
+# step 2
+reporting_male <- (sum(pull(_____________, `______________`)>=_, na.rm = TRUE)/
+              length(pull(_____________, `______________`)))*100
+reporting_male <- round(reporting_male, 1)
+
+gender
+reporting_male
+
+```
+
+```{r dav_exercise1-hint-1}
+# step 1:
+# The inputs to pull() will be the name of the data frame and the name of the specific variable of interest here. Remember, we are interested in shooter gender and the percent of shooters that are male.
+```
+
+```{r dav_exercise1-hint-2}
+# step 1
+gender <- paste(as.character(round(100 * (sum(
+    case_when(pull(shooting_data,`Shooter Gender`) == "____" ~ TRUE,
+                                                        TRUE ~ FALSE),
+                                      na.rm = TRUE)
+    /
+      sum(pull(shooting_data,`Shooter Gender`)>=_, na.rm = TRUE)),
+    1)), "%")
+
+```
+
+```{r dav_exercise1-hint-3}
+# step 1:
+# In this step, we are calculating the percentage of male shooters in school shooting cases where shooter gender is reported. The total number of male shooters is divided by the total number of school shootings that report any shooter gender. 
+```
+
+```{r dav_exercise1-hint-4}
+# step 1
+gender <- paste(as.character(round(100 * (sum(
+    case_when(pull(shooting_data,`Shooter Gender`) == "Male" ~ TRUE,
+                                                        TRUE ~ FALSE),
+                                      na.rm = TRUE)
+    /
+      sum(pull(shooting_data,`Shooter Gender`)>=0, na.rm = TRUE)),
+    1)), "%")
+
+```
+
+```{r dav_exercise1-hint-5}
+# step 2:
+# The inputs to pull() will be the name of the data frame and the name of the specific variable of interest here. Remember, we are interested in shooter gender and the percent of school shootings that report shooter gender here.
+```
+
+```{r dav_exercise1-hint-6}
+# step 1
+gender <- paste(as.character(round(100 * (sum(
+    case_when(pull(shooting_data,`Shooter Gender`) == "Male" ~ TRUE,
+                                                        TRUE ~ FALSE),
+                                      na.rm = TRUE)
+    /
+      sum(pull(shooting_data,`Shooter Gender`)>=0, na.rm = TRUE)),
+    1)), "%")
+# step 2
+reporting_male <- (sum(pull(shooting_data,`Shooter Gender`)>=_, na.rm = TRUE)/
+              length(pull(shooting_data,`Shooter Gender`)))*100
+reporting_male <- round(reporting_male, 1)
+
+gender
+reporting_male
+```
+
+```{r dav_exercise1-hint-7}
+# step 2:
+# In this step, we are calculating the percentage of school shootings that reported shooter gender. The total number of school shootings that reported any shooter gender is divided by the total number of school shootings.
+# The next hint will show you the solution
+```
+
+```{r dav_exercise1-solution}
+# step 1
+gender <- paste(as.character(round(100 * (sum(
+    case_when(pull(shooting_data,`Shooter Gender`) == "Male" ~ TRUE,
+                                                        TRUE ~ FALSE),
+                                      na.rm = TRUE)
+    /
+      sum(pull(shooting_data,`Shooter Gender`)>=0, na.rm = TRUE)),
+    1)), "%")
+# step 2
+reporting_male <- (sum(pull(shooting_data,`Shooter Gender`)>=0, na.rm = TRUE)/
+              length(pull(shooting_data,`Shooter Gender`)))*100
+reporting_male <- round(reporting_male, 1)
+
+gender
+reporting_male
+```
+
+```{r dav_exercise1-check, eval=FALSE}
+grade_code()
+```
+
+####
+
+***
+
+#### {.think_question_block}
 <details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
@@ -2043,16 +2170,138 @@ reporting_male
 
 ***
 
+####
+
+#### {.think_question_block}
 **Use of a Single Handgun**
 
 ***
 
+####
+
+```{r, echo=FALSE}
+save(shooting_data, file = here::here("www", "exercise", "dav_exercise2.rda"))
+```
+
+#### {.exercise_block}
+
+Write some code that will calculate the percentage of shooters that used a handgun as well as the percentage of school shootings that report firearm type.
+
+*Note: replace the underscores("\_") with your code with one character per "\_". Click "Submit Answer" to check your answer. *
+
+```{r dav_exercise2-setup}
+library(tidyverse)
+
+load(here::here("www", "exercise", "dav_exercise2.rda"))
+```
+
+```{r dav_exercise2, exercise=TRUE, eval=FALSE}
+# step 1
+handgun <-paste(as.character(round(100 *(sum(case_when(
+      pull(_____________,`____________`) == "_______" ~ TRUE,
+                                                 TRUE ~ FALSE), na.rm = TRUE)
+    /
+      sum(pull(_____________,`____________`)>=_, na.rm = TRUE)),
+    1)), "%")
+# step 2
+reporting_gun <- (sum(pull(_____________,`____________`)>=_, na.rm = TRUE)/
+              length(pull(_____________,`____________`)))*100
+reporting_gun <- round(reporting_gun, 1)
+
+handgun
+reporting_gun
+```
+
+```{r dav_exercise2-hint-1}
+# step 1:
+# The inputs to pull() will be the name of the data frame and the name of the specific variable of interest here. Remember, we are interested in firearm type and the percent of shooters that used a handgun.
+```
+
+```{r dav_exercise2-hint-2}
+# step 1
+handgun <-paste(as.character(round(100 *(sum(case_when(
+      pull(shooting_data, `Firearm Type`) == "_______" ~ TRUE,
+                                                 TRUE ~ FALSE), na.rm = TRUE)
+    /
+      sum(pull(shooting_data, `Firearm Type`)>=_, na.rm = TRUE)),
+    1)), "%")
+```
+
+```{r dav_exercise2-hint-3}
+# step 1:
+# In this step, we are calculating the percentage of handguns used in school shooting cases where firearm type is reported. The total number of school shootings with handguns is divided by the total number of school shootings that report any firearm type. 
+```
+
+```{r dav_exercise2-hint-4}
+# step 1
+handgun <-paste(as.character(round(100 *(sum(case_when(
+      pull(shooting_data, `Firearm Type`) == "Handgun" ~ TRUE,
+                                                 TRUE ~ FALSE), na.rm = TRUE)
+    /
+      sum(pull(shooting_data, `Firearm Type`)>=0, na.rm = TRUE)),
+    1)), "%")
+```
+
+```{r dav_exercise2-hint-5}
+# step 2:
+# The inputs to pull() will be the name of the data frame and the name of the specific variable of interest here. Remember, we are interested in firearm type and the percent of school shootings that report firearm type here.
+```
+
+```{r dav_exercise2-hint-6}
+# step 1
+handgun <-paste(as.character(round(100 *(sum(case_when(
+      pull(shooting_data, `Firearm Type`) == "Handgun" ~ TRUE,
+                                                 TRUE ~ FALSE), na.rm = TRUE)
+    /
+      sum(pull(shooting_data, `Firearm Type`)>=0, na.rm = TRUE)),
+    1)), "%")
+# step 2
+reporting_gun <- (sum(pull(shooting_data, `Firearm Type`)>=_, na.rm = TRUE)/
+              length(pull(shooting_data, `Firearm Type`)))*100
+reporting_gun <- round(reporting_gun, 1)
+
+handgun
+reporting_gun
+```
+
+```{r dav_exercise2-hint-7}
+# step 2:
+# In this step, we are calculating the percentage of school shootings that reported firearm type. The total number of school shootings that reported any firearm is divided by the total number of school shootings.
+# The next hint will show you the solution
+```
+
+```{r dav_exercise2-solution}
+# step 1
+handgun <-paste(as.character(round(100 *(sum(case_when(
+      pull(shooting_data, `Firearm Type`) == "Handgun" ~ TRUE,
+                                                 TRUE ~ FALSE), na.rm = TRUE)
+    /
+      sum(pull(shooting_data, `Firearm Type`)>=0, na.rm = TRUE)),
+    1)), "%")
+# step 2
+reporting_gun <- (sum(pull(shooting_data, `Firearm Type`)>=0, na.rm = TRUE)/
+              length(pull(shooting_data, `Firearm Type`)))*100
+reporting_gun <- round(reporting_gun, 1)
+
+handgun
+reporting_gun
+```
+
+```{r dav_exercise2-check, eval=FALSE}
+grade_code()
+```
+
+####
+
+***
+
+#### {.think_question_block}
 <details> <summary> Click here to reveal the code. </summary>
 
 
 ```{r}
 handgun <-paste(as.character(round(100 *(sum(case_when(
-      pull(shooting_data,`Firearm Type`) == "Handgun" ~ TRUE,
+      pull(shooting_data, `Firearm Type`) == "Handgun" ~ TRUE,
                                                  TRUE ~ FALSE), na.rm = TRUE)
     /
       sum(pull(shooting_data, `Firearm Type`)>=0, na.rm = TRUE)),

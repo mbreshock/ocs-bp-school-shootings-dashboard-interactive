@@ -9,6 +9,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Exercise chunks
 
+## Data Analysis and Visualization
+### Deaths per Shooting
+
+* `dav_code1`
+* `dav_exercise1`
+* `dav_exercise2`
+
 ## Our Dashboard
 ### The About Page: Details 
 
