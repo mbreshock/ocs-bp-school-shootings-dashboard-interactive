@@ -2675,24 +2675,24 @@ quiz(caption = "",
 )
 ```
 
-1) How do we create multiple pages?  
-2) How do you create multiple columns?  
-3) How do we create multiple tabs?  
-4) How do we create start a dashboard?  
-5) How do we enable our dashboard to be interactive?  
+<!-- 1) How do we create multiple pages?   -->
+<!-- 2) How do you create multiple columns?   -->
+<!-- 3) How do we create multiple tabs?   -->
+<!-- 4) How do we create start a dashboard?   -->
+<!-- 5) How do we enable our dashboard to be interactive?   -->
 
-***
-<details> <summary> Click here to reveal the answers. </summary>
+<!-- *** -->
+<!-- <details> <summary> Click here to reveal the answers. </summary> -->
 
-1) How do we create multiple pages? We use the `===` syntax.
-2) How do you create multiple columns? We use the `---` syntax.
-3) How do we create multiple tabs? We use `{.tabset}` syntax combined with the column break `---` syntax. 
-4) We create an R Markdown document and we add `output: flexdashboard::flexdashboard` to the YAML.
-5) How do we enable our dashboard to be interactive?  We add `runtime:shiny` to the YAML.
+<!-- 1) How do we create multiple pages? We use the `===` syntax. -->
+<!-- 2) How do you create multiple columns? We use the `---` syntax. -->
+<!-- 3) How do we create multiple tabs? We use `{.tabset}` syntax combined with the column break `---` syntax.  -->
+<!-- 4) We create an R Markdown document and we add `output: flexdashboard::flexdashboard` to the YAML. -->
+<!-- 5) How do we enable our dashboard to be interactive?  We add `runtime:shiny` to the YAML. -->
 
-</details>
+<!-- </details> -->
 
-***
+<!-- *** -->
 
 ####
 
