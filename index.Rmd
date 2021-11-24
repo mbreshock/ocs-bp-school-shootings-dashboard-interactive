@@ -2623,7 +2623,38 @@ See this [link](https://shiny.rstudio.com/articles/shinyapps.html) for a getting
 #### {.recall_code_question_block}
 <b><u> Question Opportunity </u></b>
 
-Let's take a minute to test your knowledge about `flexdashboard` basics:  
+Let's take a minute to test your knowledge about `flexdashboard` basics: 
+
+```{r dashbasics_quiz, echo = FALSE}
+quiz(caption = "",
+  question("How do we create multiple pages?",
+    answer("The `---` syntax", message = "This is for multiple columns."),
+    answer("The `{.tabset}` syntax combined with `---`", message = "This is for multiple tabs."),
+    answer("Create an R Markdown document and add `output: flexdashboard::flexdashboard` to the YAML", message = "This is how to start creating a dashboard."),
+    answer("Add `runtime:shiny` to the YAML", message = "This is how to enable the dashboard to be interactive."),
+    answer("The `===` syntax", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("How do we create multiple pages?",
+    answer("The `---` syntax", message = "This is for multiple columns."),
+    answer("The `{.tabset}` syntax combined with `---`", message = "This is for multiple tabs."),
+    answer("Create an R Markdown document and add `output: flexdashboard::flexdashboard` to the YAML", message = "This is how to start creating a dashboard."),
+    answer("Add `runtime:shiny` to the YAML", message = "This is how to enable the dashboard to be interactive."),
+    answer("The `===` syntax", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("Which of the following can the `mutate()` function in the `dplyr` package do? (more than one correct answers)",
+    answer("Select certain variables(columns) of the data.", message = "Selecting certain variables(columns) of the data is the function of the `select()` function."),
+    answer("Rename a variable.", message = "Renaming a variable is the function of the `rename()` function."),
+    answer("Create a new variable.", correct = TRUE),
+    answer("Modify an existing variable.", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  )
+)
+```
 
 1) How do we create multiple pages?  
 2) How do you create multiple columns?  
@@ -2636,7 +2667,7 @@ Let's take a minute to test your knowledge about `flexdashboard` basics:
 
 1) How do we create multiple pages? We use the `===` syntax.
 2) How do you create multiple columns? We use the `---` syntax.
-3) How do we create multiple tabs? We use `{.tabset} syntax combined with the column break `---` syntax. 
+3) How do we create multiple tabs? We use `{.tabset}` syntax combined with the column break `---` syntax. 
 4) We create an R Markdown document and we add `output: flexdashboard::flexdashboard` to the YAML.
 5) How do we enable our dashboard to be interactive?  We add `runtime:shiny` to the YAML.
 
