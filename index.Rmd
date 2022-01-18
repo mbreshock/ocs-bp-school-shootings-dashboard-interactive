@@ -30,7 +30,7 @@ runtime: shiny_prerendered
 <!--   background-repeat: no-repeat; -->
 <!-- } -->
 <!-- </style> -->
-<!-- (not working for interactive currently, need to investigate) -->
+<!-- (not working for interactive currently, needs to be investigated) -->
 
 <!-- Open all links in new tab-->  
 <base target="_blank"/>  
