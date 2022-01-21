@@ -1655,6 +1655,7 @@ deaths_per_event <-
   
 per_shooting_plot <- deaths_per_event %>%
   
+  
 ```
 
 ```{r dav_code1-hint-1}
