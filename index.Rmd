@@ -19,8 +19,8 @@ output:
   word_document:
     toc: yes
 runtime: shiny_prerendered
-
 ---
+
 <!-- code for including logo in toc: -->
 <!-- <style> -->
 <!-- #TOC { -->
@@ -1652,10 +1652,10 @@ load(here::here("www", "exercise", "dav_code1.rda"))
 ```{r dav_code1, exercise=TRUE}
 deaths_per_event <-
   shooting_data %>%
-  
+
 per_shooting_plot <- deaths_per_event %>%
-  
-  
+
+
 ```
 
 ```{r dav_code1-hint-1}
@@ -1664,9 +1664,9 @@ deaths_per_event <-
   group_by(`Killed (includes shooter)`) %>%
   count() %>%
   ungroup()
-  
+
 per_shooting_plot <- deaths_per_event %>%
-  
+
 ```
 
 ```{r dav_code1-hint-2}
@@ -1675,11 +1675,11 @@ deaths_per_event <-
   group_by(`Killed (includes shooter)`) %>%
   count() %>%
   ungroup()
-  
+
 per_shooting_plot <- deaths_per_event %>%
   ggplot(aes(y = `Killed (includes shooter)`, x = n)) +
     geom_col(fill = "black") +
-  
+
 ```
 
 ```{r dav_code1-solution}
@@ -2017,13 +2017,11 @@ Now try to perform variations of these calculations to calculate other statistic
 
 ***
 
-####
-
 ```{r, echo=FALSE}
 save(shooting_data, file = here::here("www", "exercise", "dav_exercise1.rda"))
 ```
 
-#### {.exercise_block}
+##### {.exercise_block}
 
 Write some code that will calculate the percentage of shooters that were male as well as the percentage of school shootings that report gender.
 
@@ -2066,7 +2064,7 @@ gender <- paste(as.character(round(100 * (sum(
                                                         TRUE ~ FALSE),
                                       na.rm = TRUE)
     /
-      sum(pull(shooting_data,`Shooter Gender`)>=_, na.rm = TRUE)),
+      sum(pull(shooting_data,`Shooter Gender`) >= _, na.rm = TRUE)),
     1)), "%")
 
 ```
@@ -2083,7 +2081,7 @@ gender <- paste(as.character(round(100 * (sum(
                                                         TRUE ~ FALSE),
                                       na.rm = TRUE)
     /
-      sum(pull(shooting_data,`Shooter Gender`)>=0, na.rm = TRUE)),
+      sum(pull(shooting_data,`Shooter Gender`) >= 0, na.rm = TRUE)),
     1)), "%")
 
 ```
@@ -2100,10 +2098,10 @@ gender <- paste(as.character(round(100 * (sum(
                                                         TRUE ~ FALSE),
                                       na.rm = TRUE)
     /
-      sum(pull(shooting_data,`Shooter Gender`)>=0, na.rm = TRUE)),
+      sum(pull(shooting_data,`Shooter Gender`) >= 0, na.rm = TRUE)),
     1)), "%")
-# step 2
-reporting_male <- (sum(pull(shooting_data,`Shooter Gender`)>=_, na.rm = TRUE)/
+# step 2 single underscore
+reporting_male <- (sum(pull(shooting_data,`Shooter Gender`) >= _, na.rm = TRUE)/
               length(pull(shooting_data,`Shooter Gender`)))*100
 reporting_male <- round(reporting_male, 1)
 
@@ -2124,10 +2122,10 @@ gender <- paste(as.character(round(100 * (sum(
                                                         TRUE ~ FALSE),
                                       na.rm = TRUE)
     /
-      sum(pull(shooting_data,`Shooter Gender`)>=0, na.rm = TRUE)),
+      sum(pull(shooting_data,`Shooter Gender`) >= 0, na.rm = TRUE)),
     1)), "%")
 # step 2
-reporting_male <- (sum(pull(shooting_data,`Shooter Gender`)>=0, na.rm = TRUE)/
+reporting_male <- (sum(pull(shooting_data,`Shooter Gender`) >= 0, na.rm = TRUE)/
               length(pull(shooting_data,`Shooter Gender`)))*100
 reporting_male <- round(reporting_male, 1)
 
@@ -2139,16 +2137,13 @@ reporting_male
 grade_code()
 ```
 
-####
+#####
 
 ***
 
-#### {.think_question_block}
 <details> <summary> Click here to reveal the code. </summary>
 
 ```{r}
-
-
 gender <- paste(as.character(round(100 * (sum(
     case_when(pull(shooting_data,`Shooter Gender`) == "Male" ~ TRUE,
                                                         TRUE ~ FALSE),
@@ -2171,20 +2166,15 @@ reporting_male
 
 ***
 
-####
-
-#### {.think_question_block}
 **Use of a Single Handgun**
 
 ***
-
-####
 
 ```{r, echo=FALSE}
 save(shooting_data, file = here::here("www", "exercise", "dav_exercise2.rda"))
 ```
 
-#### {.exercise_block}
+##### {.exercise_block}
 
 Write some code that will calculate the percentage of shooters that used a handgun as well as the percentage of school shootings that report firearm type.
 
@@ -2202,10 +2192,10 @@ handgun <-paste(as.character(round(100 *(sum(case_when(
       pull(_____________,`____________`) == "_______" ~ TRUE,
                                                  TRUE ~ FALSE), na.rm = TRUE)
     /
-      sum(pull(_____________,`____________`)>=_, na.rm = TRUE)),
+      sum(pull(_____________,`____________`) >= _, na.rm = TRUE)),
     1)), "%")
 # step 2
-reporting_gun <- (sum(pull(_____________,`____________`)>=_, na.rm = TRUE)/
+reporting_gun <- (sum(pull(_____________,`____________`) >= _, na.rm = TRUE)/
               length(pull(_____________,`____________`)))*100
 reporting_gun <- round(reporting_gun, 1)
 
@@ -2224,7 +2214,7 @@ handgun <-paste(as.character(round(100 *(sum(case_when(
       pull(shooting_data, `Firearm Type`) == "_______" ~ TRUE,
                                                  TRUE ~ FALSE), na.rm = TRUE)
     /
-      sum(pull(shooting_data, `Firearm Type`)>=_, na.rm = TRUE)),
+      sum(pull(shooting_data, `Firearm Type`) >= _, na.rm = TRUE)),
     1)), "%")
 ```
 
@@ -2239,7 +2229,7 @@ handgun <-paste(as.character(round(100 *(sum(case_when(
       pull(shooting_data, `Firearm Type`) == "Handgun" ~ TRUE,
                                                  TRUE ~ FALSE), na.rm = TRUE)
     /
-      sum(pull(shooting_data, `Firearm Type`)>=0, na.rm = TRUE)),
+      sum(pull(shooting_data, `Firearm Type`) >= 0, na.rm = TRUE)),
     1)), "%")
 ```
 
@@ -2254,10 +2244,10 @@ handgun <-paste(as.character(round(100 *(sum(case_when(
       pull(shooting_data, `Firearm Type`) == "Handgun" ~ TRUE,
                                                  TRUE ~ FALSE), na.rm = TRUE)
     /
-      sum(pull(shooting_data, `Firearm Type`)>=0, na.rm = TRUE)),
+      sum(pull(shooting_data, `Firearm Type`) >= 0, na.rm = TRUE)),
     1)), "%")
 # step 2
-reporting_gun <- (sum(pull(shooting_data, `Firearm Type`)>=_, na.rm = TRUE)/
+reporting_gun <- (sum(pull(shooting_data, `Firearm Type`) >= _, na.rm = TRUE)/
               length(pull(shooting_data, `Firearm Type`)))*100
 reporting_gun <- round(reporting_gun, 1)
 
@@ -2277,10 +2267,10 @@ handgun <-paste(as.character(round(100 *(sum(case_when(
       pull(shooting_data, `Firearm Type`) == "Handgun" ~ TRUE,
                                                  TRUE ~ FALSE), na.rm = TRUE)
     /
-      sum(pull(shooting_data, `Firearm Type`)>=0, na.rm = TRUE)),
+      sum(pull(shooting_data, `Firearm Type`) >= 0, na.rm = TRUE)),
     1)), "%")
 # step 2
-reporting_gun <- (sum(pull(shooting_data, `Firearm Type`)>=0, na.rm = TRUE)/
+reporting_gun <- (sum(pull(shooting_data, `Firearm Type`) >= 0, na.rm = TRUE)/
               length(pull(shooting_data, `Firearm Type`)))*100
 reporting_gun <- round(reporting_gun, 1)
 
@@ -2292,13 +2282,11 @@ reporting_gun
 grade_code()
 ```
 
-####
+#####
 
 ***
 
-#### {.think_question_block}
 <details> <summary> Click here to reveal the code. </summary>
-
 
 ```{r}
 handgun <-paste(as.character(round(100 *(sum(case_when(
@@ -2762,7 +2750,7 @@ There are many other argument options for how the dashboard is displayed.
 
 You can run the following command in the console to see more information about the arguments in the help pane of the R Studio [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment).
 
-```{r}
+```{r, eval=FALSE}
 ?flexdashboard::flex_dashboard()
 ```
 

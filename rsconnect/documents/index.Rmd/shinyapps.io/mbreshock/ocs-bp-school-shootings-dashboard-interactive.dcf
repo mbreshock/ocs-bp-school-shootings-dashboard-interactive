@@ -1,0 +1,14 @@
+name: ocs-bp-school-shootings-dashboard-interactive
+title: ocs-bp-school-shootings-dashboard-interactive
+username:
+account: mbreshock
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5343030
+bundleId: 5512336
+url: https://mbreshock.shinyapps.io/ocs-bp-school-shootings-dashboard-interactive/
+when: 1643238206.44016
+lastSyncTime: 1643238206.44066
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: DESCRIPTION|index.html|maintenance_notes.rmd|README.md|README.Rmd
