@@ -21,6 +21,261 @@ output:
 runtime: shiny_prerendered
 ---
 
+<!-- Open all links in new tab-->  
+<base target="_blank"/>  
+
+<div align="left" id="google_translate_element",></div>
+
+<script type="text/javascript" src='//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'></script>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
+</script>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
+                      message = FALSE, warning = FALSE, cache = FALSE,
+                      fig.align = "center", out.width = '90%')
+library(here)
+library(knitr)
+library(tidyverse)
+library(learnr)
+library(gradethis)
+gradethis::gradethis_setup()
+```
+
+#### {.outline }
+
+```{r, echo=FALSE, fig.link = "https://rsconnect.biostat.jhsph.edu/ocs-bp-school-shootings-dashboard/"}
+knitr::include_graphics(here("www", "img", "aboutpagelook.png"))
+```
+
+####
+
+The link to the dashboard described in this case study is [here](https://rsconnect.biostat.jhsph.edu/ocs-bp-school-shootings-dashboard/).  
+
+To access the GitHub Repository for this case study see here: https://github.com/opencasestudies/ocs-bp-school-shootings-dashboard/.
+
+To access the GitHub repository for this case study see here: https://github.com//opencasestudies/ocs-bp-youth-disconnection. 
+
+You may also access and download the data using our `OCSdata` package. To learn more about this package including examples, see this [link](https://github.com/opencasestudies/OCSdata). Here is how you would install this package:
+
+```{r, eval=FALSE}
+install.packages("OCSdata")
+```
+
+This case study is part of a series of public health case studies for the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/open-case-studies).
+
+For users or instructors who only wish to look at the basics of how to create a dashboard in R with the `flexdashboard` package, please see the [**Dashboard Basics**] Section. 
+
+#### {.disclaimer_block}
+
+**Disclaimer**: The purpose of the [Open Case Studies](https://opencasestudies.github.io){target="_blank"} project is **to demonstrate the use of various data science methods, tools, and software in the context of messy, real-world data**. A given case study does not cover all aspects of the research process, is not claiming to be the most appropriate way to analyze a given data set, and should not be used in the context of making policy decisions without external consultation from scientific experts. 
+
+####
+
+#### {.license_block}
+
+This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [(CC BY-NC 3.0)](https://creativecommons.org/licenses/by-nc/3.0/us/){target="_blank"} United States License.
+
+####
+
+#### {.reference_block}
+
+To cite this case study please use:
+
+Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://github.com//opencasestudies/ocs-bp-school-shootings-dashboard](https://github.com//opencasestudies/ocs-bp-school-shootings-dashboard). Open Case Studies: School Shootings in the United States (Version v1.0.0).
+
+####
+
+
+Please help us by filling out our survey.
+
+
+<div style="display: flex; justify-content: center;"><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfpN4FN3KELqBNEgf2Atpi7Wy7Nqy2beSkFQINL7Y5sAMV5_w/viewform?embedded=true" width="1200" height="700" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe></div>
+
+# **Motivation**
+*** 
+
+This case study is motivated by this [article](https://link.springer.com/content/pdf/10.1007/s11920-012-0331-6.pdf):
+
+#### {.reference_block}
+
+Flannery, D. J., Modzeleski, W. & Kretschmar, J. M. Violence and School Shootings. Curr Psychiatry Rep 15, 331 (2013). DOI: [10.1007/s11920-012-0331-6](https://doi.org/10.1007/s11920-012-0331-6)
+
+####
+
+The article explores characteristics of school shootings and violence in schools and discusses why these events may occur, as well as their impact on the communities in which they occur.
+
+The article also states that the shooters are most commonly white males, but that many previous studies of shooter characteristics could not identify any particular "profile" of shooters.
+
+> "To date, studies of school shootings have concluded that no
+consistent and reliable profile of school shooters exist..."
+
+However previous studies note some commonalities such as:
+
+> "...most shooters were depressed, had experienced some significant loss, felt persecuted or bullied by others, and had prior difficulty coping or had previously tried suicide." 
+
+Therefore in our dashboard we will examine how often a shooter was male or attempted or committed suicide during an event.
+
+
+```{r, echo = FALSE, out.width= "60%"}
+knitr::include_graphics(here::here("www", "img", "joshua-hoehne-CAokgx1GGKE-unsplash.jpg"))
+```
+
+<span>Photo by <a href="https://unsplash.com/@mrthetrain?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Joshua Hoehne</a> on <a href="https://unsplash.com/s/photos/high-school?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
+
+> "School shootings are not all the same and may require different approaches to prevention and treatment, especially with respect to identifying risk factors at the individual, school
+or community levels, and particularly with regard to examining the role that mental health issues may play to increase risk for perpetration. 
+
+> The field **needs to know more** about shooting incidents that are averted, those that result in injury but not death and about the characteristics of the more common occurrence of single homicide school shootings."
+
+
+```{r, echo = FALSE, out.width= "60%"}
+knitr::include_graphics(here::here("www", "img", "andre-hunter-AQ908FfdAMw-unsplash.jpg"))
+```
+
+<span>Photo by <a href="https://unsplash.com/@dre0316?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Andre Hunter</a> on <a href="https://unsplash.com/s/photos/high-school?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
+
+
+Given this need for more research to better understand why these events occur and how they could be averted, in this case study we will demonstrate how to create a resource for others to more easily and interactively access data about school shootings. To do so we will create what is called a [dashboard](https://en.wikipedia.org/wiki/Dashboard_(business)), which is a website that displays a report for a database. Dashboards summarize the data in a database and typically allow for users to interact with the data in some way.
+
+[Here](https://jjallaire.shinyapps.io/shiny-crandash/#dashboardl) you can see an example of a dashboard created in R about downloads of packages on [CRAN](https://cran.r-project.org/).
+
+
+On the website the tabs and plots are interactive. The above dashboard allows for users to get to know the data in a simple and quick way.
+
+The data about package downloads is succinctly summarized in an impactful manner.
+
+```{r, echo = FALSE, fig.link = "https://jjallaire.shinyapps.io/shiny-crandash/#dashboardl"}
+knitr::include_graphics(here::here("www", "img", "dashboard.png"))
+```
+
+We can quickly get a sense that the `magrittr` package is among the top most widely downloaded packages on CRAN.
+
+
+##### [[source]](https://jjallaire.shinyapps.io/shiny-crandash/#dashboardl)
+
+Now let's learn how to create a dashboard with our data of interest.
+
+# **Main Questions**
+*** 
+
+#### {.main_question_block}
+<b><u> Our main questions: </u></b>
+
+1) What has been the yearly rate of school shootings and where in the country have they occurred in the last 50 years (from January 1970 to June 2020)? 
+
+2) How many individuals are typically killed in a school shooting?
+
+3) What were the characteristics of the shooters: How often was a shooter male? How often did a shooter attempt or commit suicide?
+
+####
+
+
+# **Learning Objectives** 
+*** 
+
+In this case study, we will demonstrate how to create a [dashboard](https://en.wikipedia.org/wiki/Dashboard_(business)), which is a website that displays a report about a database. In doing so, we will focus on packages and functions from the [`tidyverse`](https://www.tidyverse.org/){target="_blank"} for the data wrangling and visualization sections. The tidyverse is a library of packages created by RStudio. While some students may be familiar with previous R programming packages, these packages make data science in R more human-readable and intuitive.
+
+
+```{r, out.width = "20%", echo = FALSE, fig.align ="center"}
+include_graphics("https://tidyverse.tidyverse.org/logo.png")
+```
+
+The skills, methods, and concepts that students will be familiar with by the end of this case study are:
+
+
+<u>**Data Science Learning Objectives:**</u>  
+  
+1. Importing text from a Google Sheets document (`googlesheets4`)  
+2. Converting date formats (`lubridate`)  
+3. Geocoding data (`ggmap`)  and creating a jitter for geocoded data on a map (`SF`)
+4. How to reshape data by pivoting between "long" and "wide" formats and drop rows with `NA` values (`tidyr`)  
+5. How to create data visualizations with `ggplot2` 
+6. An introduction to the basics of R Markdown
+7. How to create an interactive table (`DT`)  
+8. How to create a map (`leaflet`)  
+9. How to create an interactive dashboard with `flexdashboard` and `shiny`  
+
+<u>**Statistical Learning Objectives:**</u>    
+
+1. Calculating percentages for data with missing values  
+2. Creating [summary statistics](https://en.wikipedia.org/wiki/Summary_statistics)
+
+*Note: statistics is a part of data science*
+
+*** 
+
+We will begin by loading the packages that we will need:
+
+```{r}
+library(here)
+library(readr)
+library(googlesheets4)
+library(tibble)
+library(dplyr)
+library(stringr)
+library(magrittr)
+library(tidyr)
+library(ggmap)
+library(sf)
+library(lubridate)
+library(DT)
+library(htmltools)
+library(ggplot2)
+library(forcats)
+library(ggforce)
+library(waffle)
+library(poliscidata)
+library(flexdashboard)
+library(shiny)
+library(leaflet)
+library(maps)
+library(vembedr)
+library(OCSdata)
+```
+
+Note [some of these packages](https://www.tidyverse.org/packages/) are part of the `tidyverse` and can be loaded together like so:
+
+```{r, eval=FALSE}
+library(tidyverse)
+```
+
+
+ <u>**Packages used in this case study:** </u>
+
+Package   | Use in this case study                                                                      
+---------- |-------------
+[here](https://github.com/jennybc/here_here){target="_blank"}       | to easily load and save data  
+[readr](https://readr.tidyverse.org/) |  to import the data  as a csv file  
+[googlesheets4](https://googlesheets4.tidyverse.org/) | to import directly from Google Sheets
+[tibble](https://tibble.tidyverse.org/) | to create tibbles (the tidyverse version of dataframes)
+[dplyr](https://dplyr.tidyverse.org/){target="_blank"}      | to filter, subset, join, add rows to, and modify the data  
+[stringr](https://stringr.tidyverse.org/){target="_blank"}      | to manipulate  character strings within the data (collapsing strings together, replace values, and detect values)
+[magrittr](https://magrittr.tidyverse.org/){target="_blank"}      | to pipe sequential commands 
+[tidyr](https://tidyr.tidyverse.org/){target="_blank"}      | to change the shape or format of tibbles to wide and long, to drop rows with `NA` values, and to see the last few columns of a tibble
+[ggmap](https://cran.r-project.org/web/packages/ggmap/ggmap.pdf) | to geocode the data (which means get the latitude and longitude values)
+[sf](https://r-spatial.github.io/sf/) | to modify the geocoded data so that overlapping points did not overlap
+[lubridate](https://lubridate.tidyverse.org/) | to work with the data-time data    
+[DT](https://rstudio.github.io/DT/) | to create the interactive table  
+[htmltools](https://www.rdocumentation.org/packages/htmltools/versions/0.5.0) | to add a caption to our interactive table 
+[ggplot2](https://ggplot2.tidyverse.org/){target="_blank"}      | to create plots  
+[ggforce](https://cran.r-project.org/web/packages/ggforce/ggforce.pdf)   | to create a plot zoom
+[forcats](https://forcats.tidyverse.org/){target="_blank"}      | to reorder factor for plot
+[waffle](https://github.com/hrbrmstr/waffle) | to make waffle proportion plots  
+[poliscidata](https://cran.r-project.org/web/packages/poliscidata/poliscidata.pdf) | to get population values for the states
+[flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/)     | to create the dashboard  
+[shiny](https://shiny.rstudio.com/){target="_blank"}      | to allow our dashboard to be interactive   
+[leaflet](https://rstudio.github.io/leaflet/shiny.html) | to implement the [leaflet](http://leafletjs.com/) (a JavaScript library for maps) to create the map for our dashboard   
+[maps](https://cran.r-project.org/web/packages/maps/maps.pdf) | to create the simple leaflet map example   
+[vembedr](https://github.com/ijlyttle/vembedr) | to include a video in our case study 
+[OCSdata](https://github.com/opencasestudies/OCSdata) | to access and download cOCS data files
+
+The first time we use a function, we will use the `::` to indicate which package we are using. Unless we have overlapping function names, this is not necessary, but we will include it here to be informative about where the functions we will use come from.
+
 ## **Deaths per Shooting**
 ***
 
@@ -33,6 +288,10 @@ Next, we will make a plot of the number of deaths per school shooting based on t
 See if you can come up with the code for the plot.
 
 ####
+
+```{r, echo=FALSE}
+# save(shooting_data, file = here::here("www", "exercise", "dav_code1.rda"))
+```
 
 ```{r dav_code1-setup}
 library(tidyverse)
@@ -92,4 +351,424 @@ per_shooting_plot <- deaths_per_event %>%
 ```
 
 
+***
+
+#### {.think_question_block}
+<b><u> Question Opportunity </u></b>
+
+Now try to perform variations of these calculations to calculate other statistics for our dashboard, such as the percentage of the shooters that were male or the percentage of events where a single handgun was used, (hint the `Firearm Type` value will be `Handgun`).
+
+***
+
+**Shooter Was Male**
+
+
+```{r, echo=FALSE}
+# save(shooting_data, file = here::here("www", "exercise", "dav_exercise1.rda"))
+```
+
+##### {.exercise_block}
+
+Write some code that will calculate the percentage of shooters that were male as well as the percentage of school shootings that report gender.
+
+*Note: replace the underscores("\_") with your code with one character per "\_". Click "Submit Answer" to check your answer. *
+
+```{r dav_exercise1-setup}
+library(tidyverse)
+
+load(here::here("www", "exercise", "dav_exercise1.rda"))
+```
+
+```{r dav_exercise1, exercise=TRUE, eval=FALSE}
+# step 1
+gender <- paste(as.character(round(100 * (sum(
+    case_when(pull(_____________, `______________`) == "____" ~ TRUE,
+                                                        TRUE ~ FALSE),
+                                      na.rm = TRUE)
+    /
+      sum(pull(_____________, `______________`)>=_, na.rm = TRUE)),
+    1)), "%")
+# step 2
+reporting_male <- (sum(pull(_____________, `______________`)>=_, na.rm = TRUE)/
+              length(pull(_____________, `______________`)))*100
+reporting_male <- round(reporting_male, 1)
+
+gender
+reporting_male
+
+```
+
+```{r dav_exercise1-hint-1}
+# step 1:
+# The inputs to pull() will be the name of the data frame and the name of the specific variable of interest here. Remember, we are interested in shooter gender and the percent of shooters that are male.
+```
+
+```{r dav_exercise1-hint-2}
+# step 1
+gender <- paste(as.character(round(100 * (sum(
+    case_when(pull(shooting_data,`Shooter Gender`) == "____" ~ TRUE,
+                                                        TRUE ~ FALSE),
+                                      na.rm = TRUE)
+    /
+      sum(pull(shooting_data,`Shooter Gender`) >= _, na.rm = TRUE)),
+    1)), "%")
+
+```
+
+```{r dav_exercise1-hint-3}
+# step 1:
+# In this step, we are calculating the percentage of male shooters in school shooting cases where shooter gender is reported. The total number of male shooters is divided by the total number of school shootings that report any shooter gender. 
+```
+
+```{r dav_exercise1-hint-4}
+# step 1
+gender <- paste(as.character(round(100 * (sum(
+    case_when(pull(shooting_data,`Shooter Gender`) == "Male" ~ TRUE,
+                                                        TRUE ~ FALSE),
+                                      na.rm = TRUE)
+    /
+      sum(pull(shooting_data,`Shooter Gender`) >= 0, na.rm = TRUE)),
+    1)), "%")
+
+```
+
+```{r dav_exercise1-hint-5}
+# step 2:
+# The inputs to pull() will be the name of the data frame and the name of the specific variable of interest here. Remember, we are interested in shooter gender and the percent of school shootings that report shooter gender here.
+```
+
+```{r dav_exercise1-hint-6}
+# step 1
+gender <- paste(as.character(round(100 * (sum(
+    case_when(pull(shooting_data,`Shooter Gender`) == "Male" ~ TRUE,
+                                                        TRUE ~ FALSE),
+                                      na.rm = TRUE)
+    /
+      sum(pull(shooting_data,`Shooter Gender`) >= 0, na.rm = TRUE)),
+    1)), "%")
+# step 2 single underscore
+reporting_male <- (sum(pull(shooting_data,`Shooter Gender`) >= _, na.rm = TRUE)/
+              length(pull(shooting_data,`Shooter Gender`)))*100
+reporting_male <- round(reporting_male, 1)
+
+gender
+reporting_male
+```
+
+```{r dav_exercise1-hint-7}
+# step 2:
+# In this step, we are calculating the percentage of school shootings that reported shooter gender. The total number of school shootings that reported any shooter gender is divided by the total number of school shootings.
+# The next hint will show you the solution
+```
+
+```{r dav_exercise1-solution}
+# step 1
+gender <- paste(as.character(round(100 * (sum(
+    case_when(pull(shooting_data,`Shooter Gender`) == "Male" ~ TRUE,
+                                                        TRUE ~ FALSE),
+                                      na.rm = TRUE)
+    /
+      sum(pull(shooting_data,`Shooter Gender`) >= 0, na.rm = TRUE)),
+    1)), "%")
+# step 2
+reporting_male <- (sum(pull(shooting_data,`Shooter Gender`) >= 0, na.rm = TRUE)/
+              length(pull(shooting_data,`Shooter Gender`)))*100
+reporting_male <- round(reporting_male, 1)
+
+gender
+reporting_male
+```
+
+```{r dav_exercise1-check, eval=FALSE}
+grade_code()
+```
+
+#####
+
+***
+
+<!-- <details> <summary> Click here to reveal the code. </summary> -->
+
+<!-- ```{r} -->
+<!-- gender <- paste(as.character(round(100 * (sum( -->
+<!--     case_when(pull(shooting_data,`Shooter Gender`) == "Male" ~ TRUE, -->
+<!--                                                         TRUE ~ FALSE), -->
+<!--                                       na.rm = TRUE) -->
+<!--     / -->
+<!--       sum(pull(shooting_data, `Shooter Gender`)>=0, na.rm = TRUE)), -->
+<!--     1)), "%") -->
+
+<!-- reporting_male <- (sum(pull(shooting_data, `Shooter Gender`)>=0, na.rm = TRUE)/ -->
+<!--               length(pull(shooting_data, `Shooter Gender`)))*100 -->
+<!-- reporting_male <- round(reporting_male, 1) -->
+
+
+<!-- gender -->
+<!-- reporting_male -->
+
+<!-- ``` -->
+
+<!-- </details> -->
+
+<!-- *** -->
+
+**Use of a Single Handgun**
+
+```{r, echo=FALSE}
+# save(shooting_data, file = here::here("www", "exercise", "dav_exercise2.rda"))
+```
+
+##### {.exercise_block}
+
+Write some code that will calculate the percentage of shooters that used a handgun as well as the percentage of school shootings that report firearm type.
+
+*Note: replace the underscores("\_") with your code with one character per "\_". Click "Submit Answer" to check your answer. *
+
+```{r dav_exercise2-setup}
+library(tidyverse)
+
+load(here::here("www", "exercise", "dav_exercise2.rda"))
+```
+
+```{r dav_exercise2, exercise=TRUE, eval=FALSE}
+# step 1
+handgun <-paste(as.character(round(100 *(sum(case_when(
+      pull(_____________,`____________`) == "_______" ~ TRUE,
+                                                 TRUE ~ FALSE), na.rm = TRUE)
+    /
+      sum(pull(_____________,`____________`) >= _, na.rm = TRUE)),
+    1)), "%")
+# step 2
+reporting_gun <- (sum(pull(_____________,`____________`) >= _, na.rm = TRUE)/
+              length(pull(_____________,`____________`)))*100
+reporting_gun <- round(reporting_gun, 1)
+
+handgun
+reporting_gun
+```
+
+```{r dav_exercise2-hint-1}
+# step 1:
+# The inputs to pull() will be the name of the data frame and the name of the specific variable of interest here. Remember, we are interested in firearm type and the percent of shooters that used a handgun.
+```
+
+```{r dav_exercise2-hint-2}
+# step 1
+handgun <-paste(as.character(round(100 *(sum(case_when(
+      pull(shooting_data, `Firearm Type`) == "_______" ~ TRUE,
+                                                 TRUE ~ FALSE), na.rm = TRUE)
+    /
+      sum(pull(shooting_data, `Firearm Type`) >= _, na.rm = TRUE)),
+    1)), "%")
+```
+
+```{r dav_exercise2-hint-3}
+# step 1:
+# In this step, we are calculating the percentage of handguns used in school shooting cases where firearm type is reported. The total number of school shootings with handguns is divided by the total number of school shootings that report any firearm type. 
+```
+
+```{r dav_exercise2-hint-4}
+# step 1
+handgun <-paste(as.character(round(100 *(sum(case_when(
+      pull(shooting_data, `Firearm Type`) == "Handgun" ~ TRUE,
+                                                 TRUE ~ FALSE), na.rm = TRUE)
+    /
+      sum(pull(shooting_data, `Firearm Type`) >= 0, na.rm = TRUE)),
+    1)), "%")
+```
+
+```{r dav_exercise2-hint-5}
+# step 2:
+# The inputs to pull() will be the name of the data frame and the name of the specific variable of interest here. Remember, we are interested in firearm type and the percent of school shootings that report firearm type here.
+```
+
+```{r dav_exercise2-hint-6}
+# step 1
+handgun <-paste(as.character(round(100 *(sum(case_when(
+      pull(shooting_data, `Firearm Type`) == "Handgun" ~ TRUE,
+                                                 TRUE ~ FALSE), na.rm = TRUE)
+    /
+      sum(pull(shooting_data, `Firearm Type`) >= 0, na.rm = TRUE)),
+    1)), "%")
+# step 2
+reporting_gun <- (sum(pull(shooting_data, `Firearm Type`) >= _, na.rm = TRUE)/
+              length(pull(shooting_data, `Firearm Type`)))*100
+reporting_gun <- round(reporting_gun, 1)
+
+handgun
+reporting_gun
+```
+
+```{r dav_exercise2-hint-7}
+# step 2:
+# In this step, we are calculating the percentage of school shootings that reported firearm type. The total number of school shootings that reported any firearm is divided by the total number of school shootings.
+# The next hint will show you the solution
+```
+
+```{r dav_exercise2-solution}
+# step 1
+handgun <-paste(as.character(round(100 *(sum(case_when(
+      pull(shooting_data, `Firearm Type`) == "Handgun" ~ TRUE,
+                                                 TRUE ~ FALSE), na.rm = TRUE)
+    /
+      sum(pull(shooting_data, `Firearm Type`) >= 0, na.rm = TRUE)),
+    1)), "%")
+# step 2
+reporting_gun <- (sum(pull(shooting_data, `Firearm Type`) >= 0, na.rm = TRUE)/
+              length(pull(shooting_data, `Firearm Type`)))*100
+reporting_gun <- round(reporting_gun, 1)
+
+handgun
+reporting_gun
+```
+
+```{r dav_exercise2-check, eval=FALSE}
+grade_code()
+```
+
+#####
+
+
+#### {.recall_code_question_block}
+<b><u> Question Opportunity </u></b>
+
+Let's take a minute to test your knowledge about `flexdashboard` basics: 
+
+####
+
+```{r dashbasics_quiz, echo = FALSE}
+quiz(caption = "",
+  question("How do we create multiple pages?",
+    answer("The `---` syntax", message = "This is for multiple columns."),
+    answer("The `{.tabset}` syntax combined with `---`", message = "This is for multiple tabs."),
+    answer("Create an R Markdown document and add `output: flexdashboard::flexdashboard` to the YAML", message = "This is how to start creating a dashboard."),
+    answer("Add `runtime:shiny` to the YAML", message = "This is how to enable the dashboard to be interactive."),
+    answer("The `===` syntax", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("How do we create multiple columns?",
+    answer("The `---` syntax", correct = TRUE),
+    answer("The `{.tabset}` syntax combined with `---`", message = "This is for multiple tabs."),
+    answer("Create an R Markdown document and add `output: flexdashboard::flexdashboard` to the YAML", message = "This is how to start creating a dashboard."),
+    answer("Add `runtime:shiny` to the YAML", message = "This is how to enable the dashboard to be interactive."),
+    answer("The `===` syntax", message = "This is for multiple pages."),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("How do we create multiple tabs?",
+    answer("The `---` syntax", message = "This is for multiple columns."),
+    answer("The `{.tabset}` syntax combined with `---`", correct = TRUE),
+    answer("Create an R Markdown document and add `output: flexdashboard::flexdashboard` to the YAML", message = "This is how to start creating a dashboard."),
+    answer("Add `runtime:shiny` to the YAML", message = "This is how to enable the dashboard to be interactive."),
+    answer("The `===` syntax", message = "This is for multiple pages."),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("How do we start creating a dashboard?",
+    answer("The `---` syntax", message = "This is for multiple columns."),
+    answer("The `{.tabset}` syntax combined with `---`", message = "This is for multiple tabs."),
+    answer("Create an R Markdown document and add `output: flexdashboard::flexdashboard` to the YAML", correct = TRUE),
+    answer("Add `runtime:shiny` to the YAML", message = "This is how to enable the dashboard to be interactive."),
+    answer("The `===` syntax", message = "This is for multiple pages."),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("How do we enable our dashboard to be interactive?",
+    answer("The `---` syntax", message = "This is for multiple columns."),
+    answer("The `{.tabset}` syntax combined with `---`", message = "This is for multiple tabs."),
+    answer("Create an R Markdown document and add `output: flexdashboard::flexdashboard` to the YAML", message = "This is how to start creating a dashboard."),
+    answer("Add `runtime:shiny` to the YAML", correct = TRUE),
+    answer("The `===` syntax", message = "This is for multiple pages."),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  )
+)
+```
+
+<!-- 1) How do we create multiple pages?   -->
+<!-- 2) How do you create multiple columns?   -->
+<!-- 3) How do we create multiple tabs?   -->
+<!-- 4) How do we create start a dashboard?   -->
+<!-- 5) How do we enable our dashboard to be interactive?   -->
+
+<!-- *** -->
+<!-- <details> <summary> Click here to reveal the answers. </summary> -->
+
+<!-- 1) How do we create multiple pages? We use the `===` syntax. -->
+<!-- 2) How do you create multiple columns? We use the `---` syntax. -->
+<!-- 3) How do we create multiple tabs? We use `{.tabset}` syntax combined with the column break `---` syntax.  -->
+<!-- 4) We create an R Markdown document and we add `output: flexdashboard::flexdashboard` to the YAML. -->
+<!-- 5) How do we enable our dashboard to be interactive?  We add `runtime:shiny` to the YAML. -->
+
+<!-- </details> -->
+
+<!-- *** -->
+
+
+### **Details**
+***
+<details> <summary> Click here if you would like to see all of the code for this page. </summary>
+
+#### {.recall_code_question_block}
+<b><u> Question Opportunity </u></b>
+
+On this page we will have two columns - one which will be wider than the other.  Size specifications on `flexdashboard` are unit-less; the width of any column included on a page is a function of the width set for a column against the sum of widths for all columns on that page. If we set columns sizes of 600 and 300 on a page with two columns, one column will be twice as large as the other column. We want the left column to be quite a bit larger than the right, so we will set the left as `70` and the right as `30`. Can you recall how we would make these columns?
+
+####
+
+```
+About {data-icon="fa-question-circle"}
+===================================== 
+
+**LINE 1**
+-------------------------------------
+
+###
+
+**LINE 2**
+-------------------------------------
+
+###
+
+```
+
+```{r ourdash_quiz, echo = FALSE}
+quiz(caption = "This question refers to the chunk of code provided above.",
+  question("Which option would create the dashboard as described above?",
+    answer("`Column {data-width = 600}` `Column {data-width = 300}`",
+           message = "This would make the left column twice the size of the right. Here we want the left column to be more than twice the size of the right."),
+    answer("`Column {data-width = 300}` `Column {data-width = 600}`",
+           message = "This would make the left column half the size of the right. We want the left column to be more than twice the size of the right."),
+    answer("`Column {data-width = 30}` `Column {data-width = 70}`", 
+           message = "This would make the left column less than half the size of the right. We want the left column to be more than twice the size of the right."),
+    answer("`Column {data-width = 70}` `Column {data-width = 30}`", 
+           correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  )
+)
+```
+
+***
+
+<details> <summary> Click here to see the final code. </summary>
+```
+About {data-icon="fa-question-circle"}
+===================================== 
+
+Column {data-width = 70}
+-------------------------------------
+
+###
+
+Column {data-width = 30}
+-------------------------------------
+
+###
+
+```
+</details>
+***
+</details>
 ***
