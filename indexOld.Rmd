@@ -2664,6 +2664,8 @@ quiz(caption = "",
 )
 ```
 
+####
+
 <!-- 1) How do we create multiple pages?   -->
 <!-- 2) How do you create multiple columns?   -->
 <!-- 3) How do we create multiple tabs?   -->
@@ -2682,10 +2684,6 @@ quiz(caption = "",
 <!-- </details> -->
 
 <!-- *** -->
-
-####
-
-
 
 # **Our Dashboard**
 ***
