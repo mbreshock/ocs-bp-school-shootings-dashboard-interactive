@@ -1297,6 +1297,9 @@ However, we have many variables or columns in our dataset, so this can be overwh
 <!-- DT::datatable(DT_table) -->
 <!-- ``` -->
 
+<!-- embedd a link to the DT table in a separate repository -->
+<!-- ex: <iframe src="https://www.opencasestudies.org/OCS_search/" width="1200" height="1900" </iframe> -->
+
 Next, we will make some data visualizations. 
 
 
