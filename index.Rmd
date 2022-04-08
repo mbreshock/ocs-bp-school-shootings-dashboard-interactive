@@ -1282,23 +1282,26 @@ However, we have many variables or columns in our dataset, so this can be overwh
 
 <!-- chunk causing issues with learnr and gradethis renderings: -->
 
-<!-- ```{r} -->
-<!-- DT_table <-  -->
-<!--   shooting_data %>% -->
-<!--   dplyr::select(Date, -->
-<!--                 School, -->
-<!--                 City, -->
-<!--                 State, -->
-<!--                 `Killed (includes shooter)`, -->
-<!--                 `Narrative (Detailed Summary/ Background)`) %>% -->
-<!--   rename("Deaths" = `Killed (includes shooter)`) %>% -->
-<!--   rename("Narrative" = `Narrative (Detailed Summary/ Background)`) -->
+```{r, eval = FALSE}
+DT_table <-
+  shooting_data %>%
+  dplyr::select(Date,
+                School,
+                City,
+                State,
+                `Killed (includes shooter)`,
+                `Narrative (Detailed Summary/ Background)`) %>%
+  rename("Deaths" = `Killed (includes shooter)`) %>%
+  rename("Narrative" = `Narrative (Detailed Summary/ Background)`)
 
-<!-- DT::datatable(DT_table) -->
-<!-- ``` -->
+DT::datatable(DT_table)
+```
 
 <!-- embedd a link to the DT table in a separate repository -->
-<!-- ex: <iframe src="https://www.opencasestudies.org/OCS_search/" width="1200" height="1900" </iframe> -->
+
+
+<iframe src="https://www.opencasestudies.org/school-shootings-datatable/" height="720" width="1080" style="border: 1px solid #464646;" allowfullscreen="" allow="autoplay" data-external="1"></iframe>
+
 
 Next, we will make some data visualizations. 
 
