@@ -1164,6 +1164,96 @@ write_csv(shooting_data_wrangled_for_map,
                       "shooting_data_wrangled_for_map.csv"))
 ```
 
+## Exercise
+
+```{r exploration_wrangling_quiz, echo = FALSE}
+quiz(caption = "",
+  question("Which function from `dplyr` should be used to combine two data frames `x` and `y` while preserving all rows and columns from both?",
+    answer("`inner_join(x,y)`", message = "This will preserve only the rows that have matches between `x` and `y`."),
+    answer("`left_join(x,y)`", message = "This will not preserve all the rows from y."),
+    answer("`right_join(x,y)`", message = "This will not preserve all the rows from x."),
+    answer("`full_join(x,y)`", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("Which package is best for formatting calendar date values?",
+    answer("`dplyr`", message = "This package is more suited for handling whole data frames. This data may consist of calendar dates, however."),
+    answer("`ggplot2`", message = "This package is used for visualizing data."),
+    answer("`ggmap`", message = "This package is used for geocoding maps."),
+    answer("`sf`", message = "This package is used for creating geometry lists or simple feature objects."),
+    answer("`lubridate`", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("Which function from `dplyr` do we use to extract columns of interest from a data frame?",
+    answer("`filter()`", message = "This will extraact rows of interest."),
+    answer("`select()`", correct = TRUE),
+    answer("`distinct()`", message = "This removes duplicate rows."),
+    answer("`slice()`", message = "This will extract rows by position."),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  )
+)
+```
+
+Use the R built-in dataset `mtcars` to complete the following exercise. 
+
+```{r}
+head(mtcars)
+```
+
+Write some code that will change the `vs` and `am` columns in `mtcars` from numeric to logical values. Save this as a new object called `mtcars_log`. 
+
+*Note: replace the underscores(“_”) with your code with one character per “_”. Click “Submit Answer” to check your answer.*
+
+```{r dew_code1-setup}
+library(tidyverse)
+library(magrittr)
+```
+
+```{r dew_code1, exercise=TRUE}
+mtcars_log = ______ %>%
+  ______(__ = dplyr::case_when(__ == 0 ~ _____,  # step 1
+                               __ == 1 ~ ____), 
+         __ = dplyr::case_when(__ == 0 ~ _____,  # step 2
+                               __ == 1 ~ ____))
+
+mtcars_log
+
+```
+
+```{r dew_code1-hint-1}
+mtcars_log = mtcars %>%
+  ______(__ = dplyr::case_when(__ == 0 ~ _____,  # step 1
+                               __ == 1 ~ ____), 
+         __ = dplyr::case_when(__ == 0 ~ _____,  # step 2
+                               __ == 1 ~ ____))
+
+mtcars_log
+
+```
+
+```{r dew_code1-hint-2}
+mtcars_log = mtcars %>%
+  mutate(vs = dplyr::case_when(vs == 0 ~ FALSE,  # step 1
+                               vs == 1 ~ TRUE), 
+         __ = dplyr::case_when(__ == 0 ~ _____,  # step 2
+                               __ == 1 ~ ____))
+
+mtcars_log
+
+```
+
+```{r dew_code1-solution}
+mtcars_log = mtcars %>%
+  mutate(vs = dplyr::case_when(vs == 0 ~ FALSE,  # step 1
+                               vs == 1 ~ TRUE), 
+         am = dplyr::case_when(am == 0 ~ FALSE,  # step 2
+                               am == 1 ~ TRUE))
+
+mtcars_log
+
+```
 
 # **Data Analysis and Visualization**
 *** 
