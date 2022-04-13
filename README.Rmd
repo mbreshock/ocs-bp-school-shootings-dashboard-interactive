@@ -39,7 +39,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 (
 
 To cite this case study:
 
-Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://github.com//opencasestudies/ocs-bp-school-shootings-dashboard](https://github.com//opencasestudies/ocs-bp-school-shootings-dashboard). School Shootings in the United States (Version v1.0.0).
+Wright, Carrie and Ontiveros, Michael and Breshock, Michael and Meng, Qier and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://github.com//opencasestudies/ocs-bp-school-shootings-dashboard](https://github.com//opencasestudies/ocs-bp-school-shootings-dashboard). Open Case Studies: School Shootings in the United States (Version v1.0.0).
 
 ### Acknowledgments
 
@@ -47,6 +47,11 @@ We would like to acknowledge [Elizabeth Stuart](https://www.jhsph.edu/faculty/di
 
 We would also like to acknowledge the [Bloomberg American Health Initiative](https://americanhealth.jhu.edu/) for funding this work. 
 
+### Reading Metrics
+
+The total reading time for this case study was calculated with [koRpus](https://github.com/unDocUMeantIt/koRpus): **About 110 minutes**
+
+The Flesch-Kincaid Readability Index was also calculated with [koRpus](https://github.com/unDocUMeantIt/koRpus): **Grade 9, Age 14**
 
 ### Title 
  
@@ -245,4 +250,8 @@ This case study is appropriate for those new to R programming. It is also approp
 
 Create another dashboard with graphs and statistics featuring other elements within this dataset. For example, students may create graphs that explore what school events are reported to have more shootings. Students could be asked to use one of the pages of the dashboard that we created as an example. 
 
+#### Estimate of RMarkdown Compilation Time:
 
+~ About 37 - 47 seconds
+
+This compilation time was measured on a PC machine operating on Windows 10. This range should only be used as an estimate as compilation time will vary with different machines and operating systems.

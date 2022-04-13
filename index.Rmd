@@ -52,6 +52,14 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
                       fig.align = "center", out.width = '90%')
 library(here)
 library(knitr)
+library(magrittr)
+remotes::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
+remotes::install_github("alistaire47/read.so")
+library(wordcountaddin)
+library(read.so)
+
+rmarkdown:::perf_timer_reset_all()
+rmarkdown:::perf_timer_start("render")
 
 library(learnr)
 library(gradethis)
@@ -98,10 +106,37 @@ This work is licensed under the Creative Commons Attribution-NonCommercial 3.0 [
 
 To cite this case study please use:
 
-Wright, Carrie and Ontiveros, Michael and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://github.com//opencasestudies/ocs-bp-school-shootings-dashboard](https://github.com//opencasestudies/ocs-bp-school-shootings-dashboard). Open Case Studies: School Shootings in the United States (Version v1.0.0).
+Wright, Carrie and Ontiveros, Michael and Breshock, Michael and Meng, Qier and Jager, Leah and Taub, Margaret and Hicks, Stephanie. (2020). [https://github.com//opencasestudies/ocs-bp-school-shootings-dashboard](https://github.com//opencasestudies/ocs-bp-school-shootings-dashboard). Open Case Studies: School Shootings in the United States (Version v1.0.0).
 
 ####
 
+The total reading time for this case study is calculated via [koRpus](https://github.com/unDocUMeantIt/koRpus) and shown below: 
+
+```{r, echo=FALSE}
+readtable = text_stats("index.Rmd") # producing reading time markdown table
+readtime = read.so::read.md(readtable) %>% dplyr::select(Method, koRpus) %>% # reading table into dataframe, selecting relevant factors
+  dplyr::filter(Method == "Reading time") %>% # dropping unnecessary rows
+  dplyr::mutate(koRpus = paste(round(as.numeric(stringr::str_split(koRpus, " ")[[1]][1])), "minutes")) %>% # rounding reading time estimate
+  dplyr::mutate(Method = "koRpus") %>% dplyr::relocate(koRpus, .before = Method) %>% dplyr::rename(`Reading Time` = koRpus) # reorganizing table
+knitr::kable(readtime, format="markdown")
+```
+
+***
+
+**Readability Score: **
+
+A readability index estimates the reading difficulty level of a particular text. Flesch-Kincaid, FORCAST, and SMOG are three common readability indices that were calculated for this case study via [koRpus](https://github.com/unDocUMeantIt/koRpus). These indices provide an estimation of the minimum reading level required to comprehend this case study by grade and age. 
+
+```{r, echo=FALSE}
+rt = wordcountaddin::readability("index.Rmd", quiet=TRUE) # producing readability markdown table
+df = read.so::read.md(rt) %>% dplyr::select(index, grade, age) %>%  # reading table into dataframe, selecting relevant factors
+  tidyr::drop_na() %>% dplyr::mutate(grade = round(as.numeric(grade)), # dropping rows with missing values, rounding age and grade columns
+                                     age = round(as.numeric(age))
+                                     )
+knitr::kable(df, format="markdown")
+```
+
+***
 
 Please help us by filling out our survey.
 
@@ -1164,7 +1199,7 @@ write_csv(shooting_data_wrangled_for_map,
                       "shooting_data_wrangled_for_map.csv"))
 ```
 
-## Exercise
+## **Exercise**
 
 ```{r exploration_wrangling_quiz, echo = FALSE}
 quiz(caption = "",
@@ -1186,7 +1221,7 @@ quiz(caption = "",
     random_answer_order = TRUE
   ),
   question("Which function from `dplyr` do we use to extract columns of interest from a data frame?",
-    answer("`filter()`", message = "This will extraact rows of interest."),
+    answer("`filter()`", message = "This will extract rows of interest."),
     answer("`select()`", correct = TRUE),
     answer("`distinct()`", message = "This removes duplicate rows."),
     answer("`slice()`", message = "This will extract rows by position."),
@@ -1271,7 +1306,7 @@ load(here::here("www", "data", "wrangled", "shooting_data_wrangled_for_map.rda")
 
 ```
 
-We need the wangled data that is prepared both for the map and the data just before the last wrangling step Geometry lists with the `sf` package] to prepare for the map because we removed some events that did not have addresses that were identified by Google (had `NA` values for latitude or longitude).  We want to use data for all events for our statistics, tables, and plots.
+We need the wangled data that is prepared both for the map and the data just before the last wrangling step Geometry lists with the `sf` package to prepare for the map because we removed some events that did not have addresses that were identified by Google (had `NA` values for latitude or longitude).  We want to use data for all events for our statistics, tables, and plots.
 
 #### {.click_to_expand_block}
 
@@ -2407,6 +2442,92 @@ reporting_gun
 
 ####
 
+## **Exercise**
+
+```{r analysis_visualization_quiz, echo = FALSE}
+quiz(caption = "",
+  question("Which function from `ggplot2` do we use to create a bar plot of raw values instead of counts?",
+    answer("`geom_line()`", message = "This creates a continuous line plot."),
+    answer("`geom_point()`", message = "This creates a scatter plot."),
+    answer("`geom_boxplot()`", message = "This creates a box plot."),
+    answer("`geom_bar()`", message = "Close, however this function defaults to using counts rather than the raw values themselves."),
+    answer("`geom_col()`", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("Which package do we use to create searchable tables?",
+    answer("`dplyr`", message = "This package is used for wrangling data frames."),
+    answer("`ggplot2`", message = "This package is used for visualizing data."),
+    answer("`ggmap`", message = "This package is used for geocoding maps."),
+    answer("`sf`", message = "This package is used for creating geometry lists or simple feature objects."),
+    answer("`DT`", correct = TRUE),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  question("What does the function `pivot_longer()` do?",
+    answer("It increases the number of columns or variables and decreases rows or observations.", message = "This describes the `pivot_wider()` function."),
+    answer("It decreases the number of columns or variables and increases rows or observations.", correct = TRUE),
+    answer("It increases both the number of columns or variables and rows or observations.", message = "This would require collecting more data!"),
+    answer("It does nothing!", message = "It does, in fact, do something."),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  )
+)
+```
+
+Use the R built-in dataset `mtcars` to complete the following exercise. 
+
+```{r}
+head(mtcars)
+```
+
+Write some code that will create a bar plot of the raw values in the `mpg` column for each car in `mtcars` using `ggplot2` and `geom_col()`.
+
+*Note: replace the underscores(“_”) with your code with one character per “_”. Click “Submit Answer” to check your answer.*
+
+```{r dav_code2-setup}
+library(ggplot2)
+```
+
+```{r dav_code2, exercise=TRUE}
+mpg_plot = ______(______, aes(x = row.names(mtcars), y = ___)) + ________() + 
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5)) 
+  # this theme command will make the x-axis labels easier to read
+  # this part is provided for you since it is not covered in the case study.
+
+mpg_plot
+
+```
+
+```{r dav_code2-hint-1}
+mpg_plot = ggplot(mtcars, aes(x = row.names(mtcars), y = ___)) + ________() + 
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5)) 
+  # this theme command will make the x-axis labels easier to read
+  # this part is provided for you since it is not covered in the case study.
+
+mpg_plot
+
+```
+
+```{r dav_code2-hint-2}
+mpg_plot = ggplot(mtcars, aes(x = row.names(mtcars), y = mpg)) + ________() + 
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5)) 
+  # this theme command will make the x-axis labels easier to read
+  # this part is provided for you since it is not covered in the case study.
+
+mpg_plot
+
+```
+
+```{r dav_code2-solution}
+mpg_plot = ggplot(mtcars, aes(x = row.names(mtcars), y = mpg)) + geom_col() + 
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5))
+  # this theme command will make the x-axis labels easier to read
+  # this part is provided for you since it is not covered in the case study.
+
+mpg_plot
+
+```
 
 # **Dashboard Basics**
 ***
@@ -4734,6 +4855,15 @@ If you or your child or student experienced a shooting please see this [website]
 sessionInfo()
 ```
 
+**Estimate of RMarkdown Compilation Time: **
+
+```{r, echo=FALSE}
+rmarkdown:::perf_timer_stop("render")
+pts = rmarkdown:::perf_timer_summary()
+cat("About", round(pts$time[1]/1000 + 5), "-", round(pts$time[1]/1000 + 15),"seconds")
+```
+
+This compilation time was measured on a PC machine operating on Windows 10. This range should only be used as an estimate as compilation time will vary with different machines and operating systems.
 
 ## **Acknowledgments**
 ***
