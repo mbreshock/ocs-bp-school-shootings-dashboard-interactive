@@ -54,7 +54,13 @@ library(here)
 library(knitr)
 library(magrittr)
 remotes::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
+remotes::install_github("rstudio/gradethis", type = "source", dependencies = TRUE)
+remotes::install_github("thomasp85/ggforce", type = "source", dependencies = TRUE)
+remotes::install_github("hrbrmstr/waffle", type = "source", dependencies = TRUE)
+remotes::install_github("cran/poliscidata", type = "source", dependencies = TRUE)
+remotes::install_github("cran/flexdashboard", type = "source", dependencies = TRUE)
 remotes::install_github("alistaire47/read.so")
+
 library(wordcountaddin)
 library(read.so)
 
@@ -69,7 +75,7 @@ gradethis::gradethis_setup()
 #### {.outline }
 
 ```{r, echo=FALSE, fig.link = "https://rsconnect.biostat.jhsph.edu/ocs-bp-school-shootings-dashboard/"}
-knitr::include_graphics(here("www", "img", "aboutpagelook.png"))
+knitr::include_graphics(here::here("www", "img", "aboutpagelook.png"))
 ```
 
 ####
@@ -992,11 +998,11 @@ This requires listing the R object, followed by the path for where the file shou
 
 ```{r, eval = FALSE}
 shooting_data_wrangled_pre_map <- shooting_data
-save(shooting_data_wrangled_pre_map, file = here("www", "data", "wrangled",
+save(shooting_data_wrangled_pre_map, file = here::here("www", "data", "wrangled",
                              "shooting_data_wrangled_pre_map.rda"))
 
 readr::write_csv(shooting_data_wrangled_pre_map, 
-                 file = here("www", "data", "wrangled",
+                 file = here::here("www", "data", "wrangled",
                              "shooting_data_wrangled_pre_map.csv"))
 ```
 
@@ -1013,12 +1019,12 @@ You can also access this data [here](https://github.com/opencasestudies/ocs-bp-s
 
 To load the data, you may double click the downloaded `.rda` file in RStudio, or put the downloaded file in the appropriate directory and use the following command.
 ```{r, eval=FALSE}
-load(file = here("data", "wrangled",
+load(file = here::here("data", "wrangled",
                              "shooting_data_wrangled_pre_map.rda"))
 ```
 
 ```{r, echo=FALSE}
-load(file = here("www", "data", "wrangled",
+load(file = here::here("www", "data", "wrangled",
                              "shooting_data_wrangled_pre_map.rda"))
 ```
 
@@ -1191,11 +1197,11 @@ Finally, we will save our wrangled data, again using `save()` and we will also w
 ```{r, eval = FALSE}
 
 save(shooting_data_wrangled_for_map, 
-          file = here("www", "data", "wrangled",
+          file = here::here("www", "data", "wrangled",
                       "shooting_data_wrangled_for_map.rda"))
 
 write_csv(shooting_data_wrangled_for_map, 
-          file = here("www", "data", "wrangled",
+          file = here::here("www", "data", "wrangled",
                       "shooting_data_wrangled_for_map.csv"))
 ```
 
@@ -2706,12 +2712,12 @@ knitr::include_graphics(here::here("www", "img", "valuebox.png"))
 
 ##### [[source]](https://rmarkdown.rstudio.com/flexdashboard/using.html#value_boxes)
 
-7. Instead of value boxes you can also include a slight variation called a gauge. These are created with the `guage()` function from the `flexdashboard` package. This requires numeric values for a `value`, a `min`, and a `max` argument. Optionally, a symbol can also be added with the `symbol` argument. The value argument does not have to be explicitly called though, which is also true of the `valueBox()` function.
+7. Instead of value boxes you can also include a slight variation called a gauge. These are created with the `gauge()` function from the `flexdashboard` package. This requires numeric values for a `value`, a `min`, and a `max` argument. Optionally, a symbol can also be added with the `symbol` argument. The value argument does not have to be explicitly called though, which is also true of the `valueBox()` function.
 
 Here is a simple example:
 
 ```
-### GuageText
+### GaugeText
 
 '''{r}
 flexdashboard::gauge(value = 10, 
@@ -3001,11 +3007,11 @@ For more information about what these packages were used for, see the beginning 
 
 ```{r, eval = FALSE}
 shooting_data <- 
-  read_csv(here("www", "data", "wrangled",
+  read_csv(here::here("www", "data", "wrangled",
                 "shooting_data_wrangled_pre_map.csv"))
 
 shooting_data_for_map <- 
-  read_csv(here("www", "data", "wrangled",
+  read_csv(here::here("www", "data", "wrangled",
                 "shooting_data_wrangled_for_map.csv"))
 ```
 
